@@ -9,6 +9,11 @@ python = "^3.9"
 fastapi = "^0.85.1"
 uvicorn = {extras = ["standard"], version = "^0.18.3"}
 python-dotenv = "^0.21.0"
+tortoise-orm = {extras = ["asyncpg"], version = "^0.19.2"}
+python-multipart = "^0.0.5"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+Markdown = "^3.4.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.10.0"
@@ -16,6 +21,7 @@ autoflake = "^1.7.6"
 flake8 = "^5.0.4"
 mypy = "^0.982"
 isort = "^5.10.1"
+types-Markdown = "^3.4.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

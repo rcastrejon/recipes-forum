@@ -1,10 +1,7 @@
-from typing import Any
-
 from fastapi import APIRouter
+
+from app.api.endpoints import auth
 
 api_router = APIRouter()
 
-
-@api_router.get("/hello")
-async def hello_world(world: str = "World") -> Any:
-    return {"message": f"Hello, {world}!"}
+api_router.include_router(auth.router, tags=["auth"])
