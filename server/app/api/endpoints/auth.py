@@ -34,7 +34,7 @@ async def get_access_token(
     settings: Settings = Depends(get_settings),
 ) -> Any:
     try:
-        user = await User.get()
+        user = await User.get(username=form_data.username)
     except DoesNotExist:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
