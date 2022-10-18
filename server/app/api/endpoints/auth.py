@@ -2,9 +2,10 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from tortoise.exceptions import DoesNotExist, IntegrityError
+from tortoise.exceptions import IntegrityError
 
 import app.schemas.auth as schemas
+import app.schemas.responses as r
 from app.api.deps import get_current_user
 from app.core import Settings, get_settings
 from app.models import User
@@ -12,10 +13,13 @@ from app.models import User
 router = APIRouter()
 
 
-@router.post("/register")
+@router.post("/register", response_model=r.OkMessage)
 async def register_user(register_data: schemas.RegisterUser) -> Any:
-    new_user = User(**register_data.dict(exclude_unset=True, exclude={"password"}))
-    new_user.password = register_data.password.get_secret_value()
+    new_user = User.ctor(
+        username=register_data.username,
+        plain_password=register_data.password.get_secret_value(),
+        display_name=register_data.display_name,
+    )
     try:
         await new_user.save()
     except IntegrityError:
@@ -28,14 +32,13 @@ async def register_user(register_data: schemas.RegisterUser) -> Any:
     }
 
 
-@router.post("/login")
+@router.post("/login", response_model=schemas.AccessTokenOut)
 async def get_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
     settings: Settings = Depends(get_settings),
 ) -> Any:
-    try:
-        user = await User.get(username=form_data.username)
-    except DoesNotExist:
+    user = await User.get_or_none(username=form_data.username)
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Incorrect username or password",
@@ -51,7 +54,7 @@ async def get_access_token(
     }
 
 
-@router.get("/is_authenticated")
+@router.get("/is_authenticated", response_model=r.OkMessage)
 async def is_authenticated(_: User = Depends(get_current_user)) -> Any:
     return {
         "ok": True,

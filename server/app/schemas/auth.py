@@ -41,3 +41,16 @@ class RegisterUser(BaseModel):
 class AccessTokenPayload(BaseModel):
     exp: float
     sub: str
+
+
+class AccessTokenOut(BaseModel):
+    token_type: str
+    access_token: str
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "token_type": "bearer",
+                "access_token": "example_access_token",
+            }
+        }

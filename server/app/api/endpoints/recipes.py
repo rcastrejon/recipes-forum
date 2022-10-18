@@ -14,13 +14,14 @@ from tortoise.functions import Count
 
 import app.schemas.pagination as p
 import app.schemas.recipe as schemas
+import app.schemas.responses as r
 from app.api.deps import Pagination, get_current_user
 from app.models import Recipe, Recipe_Pydantic, RecipeList_Pydantic, User
 
 router = APIRouter()
 
 
-@router.post("")
+@router.post("", response_model=r.OkMessage)
 async def create_recipe(
     recipe_data: schemas.CreateRecipe = Depends(schemas.CreateRecipe.as_form),
     thumbnail: UploadFile = File(),
@@ -38,7 +39,7 @@ async def create_recipe(
             "ok": False,
             "message": "Thumbnail must be less than 2MB",
         }
-    new_recipe = Recipe.new(
+    new_recipe = Recipe.ctor(
         title=recipe_data.title,
         content_md=recipe_data.content_md,
         thumbnail=b_thumbnail,
@@ -61,9 +62,11 @@ async def list_recipes(
         query = query.order_by("-created_at")
     else:
         query = query.order_by("-likes_count", "-created_at")
-    query = query.offset(pagination.get_offset()).limit(pagination.get_limit())
+    query = query.offset(pagination.get_offset())
     results_count = await query.limit(pagination.get_limit() + 1).count()
-    recipes = await RecipeList_Pydantic.from_queryset(query)
+    recipes = await RecipeList_Pydantic.from_queryset(
+        query.limit(pagination.get_limit())
+    )
     previous_page, next_page = pagination.get_previous_and_next_pages(results_count)
     return p.RecipePage(
         data=recipes,
@@ -100,7 +103,7 @@ async def get_recipe_thumbnail(
     return Response(content=recipe.thumbnail, media_type=recipe.thumbnail_media_type)
 
 
-@router.patch("/{recipe_id}")
+@router.patch("/{recipe_id}", response_model=r.OkMessage)
 async def update_recipe(
     recipe_id: UUID,
     recipe_data: schemas.UpdateRecipe,
@@ -127,7 +130,7 @@ async def update_recipe(
     }
 
 
-@router.delete("/{recipe_id}")
+@router.delete("/{recipe_id}", response_model=r.OkMessage)
 async def delete_recipe(
     recipe_id: UUID,
     user: User = Depends(get_current_user),

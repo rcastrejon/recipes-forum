@@ -43,7 +43,7 @@ class User(AbstractBase):
     password_hash = fields.CharField(max_length=60)
 
     @classmethod
-    def new(
+    def ctor(
         cls, username: str, plain_password: str, display_name: Optional[str] = None
     ) -> "User":
         user = cls(username=username, display_name=display_name)
@@ -83,7 +83,7 @@ class Recipe(AbstractBase):
     )
 
     @classmethod
-    def new(
+    def ctor(
         cls,
         title: str,
         content_md: str,

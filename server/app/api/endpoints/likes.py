@@ -3,13 +3,14 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
+import app.schemas.responses as r
 from app.api.deps import get_current_user
 from app.models import Like, Recipe, User
 
 router = APIRouter()
 
 
-@router.post("/recipes/{recipe_id}/likes")
+@router.post("/recipes/{recipe_id}/likes", response_model=r.OkMessage)
 async def user_liked_recipe(
     recipe_id: UUID, user: User = Depends(get_current_user)
 ) -> Any:
@@ -18,19 +19,19 @@ async def user_liked_recipe(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Recipe not found"
         )
-    if await user.likes.filter(recipe=recipe).exists():  # type: ignore
+    _, was_created = await Like.get_or_create(user=user, recipe=recipe)
+    if not was_created:
         return {
             "ok": False,
             "message": "You already liked this recipe",
         }
-    await Like.create(user=user, recipe=recipe)
     return {
         "ok": True,
         "message": "Recipe liked successfully",
     }
 
 
-@router.delete("/recipes/{recipe_id}/likes")
+@router.delete("/recipes/{recipe_id}/likes", response_model=r.OkMessage)
 async def user_removed_like(
     recipe_id: UUID, user: User = Depends(get_current_user)
 ) -> Any:
@@ -39,7 +40,7 @@ async def user_removed_like(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Recipe not found"
         )
-    like: Like = await user.likes.filter(recipe=recipe).first()  # type: ignore
+    like = await Like.get_or_none(user=user, recipe=recipe)
     if not like:
         return {
             "ok": False,
