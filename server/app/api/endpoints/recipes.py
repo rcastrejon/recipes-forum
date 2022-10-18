@@ -12,8 +12,9 @@ from fastapi import (
 )
 from tortoise.functions import Count
 
+import app.schemas.pagination as p
 import app.schemas.recipe as schemas
-from app.api.deps import get_current_user
+from app.api.deps import Pagination, get_current_user
 from app.models import Recipe, Recipe_Pydantic, RecipeList_Pydantic, User
 
 router = APIRouter()
@@ -51,11 +52,26 @@ async def create_recipe(
     }
 
 
-@router.get("", response_model=RecipeList_Pydantic)
-async def list_recipes() -> Any:
-    recipes = Recipe.all().annotate(likes_count=Count("likes__id"))
-    print(recipes.as_query())
-    return await RecipeList_Pydantic.from_queryset(recipes)
+@router.get("", response_model=p.RecipePage)
+async def list_recipes(
+    sorting: schemas.RecipeSorting = "created_at", pagination: Pagination = Depends()
+) -> Any:
+    query = Recipe.all().annotate(likes_count=Count("likes__id"))
+    if sorting == "created_at":
+        query = query.order_by("-created_at")
+    else:
+        query = query.order_by("-likes_count", "-created_at")
+    query = query.offset(pagination.get_offset()).limit(pagination.get_limit())
+    results_count = await query.limit(pagination.get_limit() + 1).count()
+    recipes = await RecipeList_Pydantic.from_queryset(query)
+    previous_page, next_page = pagination.get_previous_and_next_pages(results_count)
+    return p.RecipePage(
+        data=recipes,
+        cursor={
+            "previous_page": previous_page,
+            "next_page": next_page,
+        },
+    )
 
 
 @router.get("/{recipe_id}", response_model=Recipe_Pydantic)

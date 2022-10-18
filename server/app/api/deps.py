@@ -1,6 +1,7 @@
 from datetime import datetime
+from typing import Optional
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Query, status
 from fastapi.security import OAuth2PasswordBearer
 from jose.exceptions import JWTError
 from tortoise.exceptions import DoesNotExist
@@ -39,3 +40,27 @@ async def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
     return user
+
+
+class Pagination:
+    def __init__(
+        self,
+        page: int = Query(1, ge=1, description="Page number"),
+        limit: int = Query(20, ge=1, le=100, description="Number of items per page"),
+    ) -> None:
+        self.page = page
+        self.limit = limit
+
+    def get_offset(self) -> int:
+        return (self.page - 1) * self.limit
+
+    def get_limit(self) -> int:
+        return self.limit
+
+    def get_previous_and_next_pages(
+        self,
+        results_count: int,
+    ) -> tuple[Optional[int], Optional[int]]:
+        previous_page = self.page - 1 if self.page > 1 else None
+        next_page = self.page + 1 if results_count > self.limit else None
+        return (previous_page, next_page)

@@ -1,8 +1,10 @@
 from types import MappingProxyType
-from typing import Any, Mapping
+from typing import Any, Literal, Mapping
 
 from fastapi import Form
 from pydantic import BaseModel, ConstrainedStr
+
+RecipeSorting = Literal["created_at", "likes_count"]
 
 TITLE_FIELD: Mapping[str, Any] = MappingProxyType(
     {
