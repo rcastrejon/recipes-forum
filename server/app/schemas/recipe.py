@@ -1,5 +1,5 @@
 from types import MappingProxyType
-from typing import Any, Literal, Mapping
+from typing import Any, Literal, Mapping, Optional
 
 from fastapi import Form
 from pydantic import BaseModel, ConstrainedStr
@@ -40,3 +40,16 @@ class CreateRecipe(BaseModel):
         content_md: str = Form(**CONTENT_FIELD),
     ) -> Any:
         return cls(title=title, content_md=content_md)
+
+
+class UpdateRecipe(BaseModel):
+    title: Optional[TitleField]
+    content_md: Optional[ContentField]
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "title": "Updated title",
+                "content_md": "Updated content",
+            }
+        }

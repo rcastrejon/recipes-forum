@@ -98,3 +98,53 @@ async def get_recipe_thumbnail(
             detail="Recipe not found",
         )
     return Response(content=recipe.thumbnail, media_type=recipe.thumbnail_media_type)
+
+
+@router.patch("/{recipe_id}")
+async def update_recipe(
+    recipe_id: UUID,
+    recipe_data: schemas.UpdateRecipe,
+    user: User = Depends(get_current_user),
+) -> Any:
+    recipe = await Recipe.get_or_none(id=recipe_id).prefetch_related("created_by")
+    if not recipe:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Recipe not found"
+        )
+    if recipe.created_by != user:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You don't have permission to edit this recipe",
+        )
+    if recipe_data.title:
+        recipe.title = recipe_data.title
+    if recipe_data.content_md:
+        recipe.content = recipe_data.content_md
+    await recipe.save()
+    return {
+        "ok": True,
+        "message": "Recipe updated successfully",
+    }
+
+
+@router.delete("/{recipe_id}")
+async def delete_recipe(
+    recipe_id: UUID,
+    user: User = Depends(get_current_user),
+) -> Any:
+    recipe = await Recipe.get_or_none(id=recipe_id).prefetch_related("created_by")
+    if not recipe:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Recipe not found",
+        )
+    if recipe.created_by != user:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You don't have permission to delete this recipe",
+        )
+    await recipe.delete()
+    return {
+        "ok": True,
+        "message": "Recipe deleted successfully",
+    }

@@ -30,7 +30,7 @@ class Like(CreatedAtMixin, Model):
         "models.User", related_name="likes"
     )
     recipe: fields.ForeignKeyRelation["Recipe"] = fields.ForeignKeyField(
-        "models.Recipe", related_name="likes"
+        "models.Recipe", related_name="likes", on_delete=fields.CASCADE
     )
 
     class Meta:
@@ -41,6 +41,14 @@ class User(AbstractBase):
     username = fields.CharField(max_length=15, unique=True)
     display_name: Optional[str] = fields.CharField(max_length=50, null=True)
     password_hash = fields.CharField(max_length=60)
+
+    @classmethod
+    def new(
+        cls, username: str, plain_password: str, display_name: Optional[str] = None
+    ) -> "User":
+        user = cls(username=username, display_name=display_name)
+        user.password = plain_password
+        return user
 
     @property
     def password(self) -> str:
