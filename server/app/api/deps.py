@@ -43,6 +43,10 @@ async def get_current_user(
 
 
 class Pagination:
+    page: int
+    limit: int
+    offset: int
+
     def __init__(
         self,
         page: int = Query(1, ge=1, description="Page number"),
@@ -50,6 +54,7 @@ class Pagination:
     ) -> None:
         self.page = page
         self.limit = limit
+        self.offset = self.get_offset()
 
     def get_offset(self) -> int:
         return (self.page - 1) * self.limit

@@ -37,7 +37,7 @@ class Like(CreatedAtMixin, Model):
         unique_together = ("user", "recipe")
 
 
-class User(AbstractBase):
+class User(AbstractBase, TimestampMixin):
     username = fields.CharField(max_length=15, unique=True)
     display_name: Optional[str] = fields.CharField(max_length=50, null=True)
     password_hash = fields.CharField(max_length=60)
@@ -124,4 +124,7 @@ class Recipe(AbstractBase):
 Tortoise.init_models(["app.models"], "models")
 
 Recipe_Pydantic = pydantic_model_creator(Recipe)
-RecipeList_Pydantic = pydantic_queryset_creator(Recipe)
+RecipeList_Pydantic = pydantic_queryset_creator(
+    Recipe, exclude=("content_md", "content_html")
+)
+User_Pydantic = pydantic_model_creator(User)
