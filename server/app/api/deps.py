@@ -11,6 +11,7 @@ from app.core import Settings, get_settings
 from app.models import User
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
+optional_oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", auto_error=False)
 
 
 async def get_current_user(
@@ -42,6 +43,15 @@ async def get_current_user(
     return user
 
 
+async def get_user_optional(
+    access_token: Optional[str] = Depends(optional_oauth2_scheme),
+    settings: Settings = Depends(get_settings),
+) -> Optional[User]:
+    if not access_token:
+        return None
+    return await get_current_user(access_token, settings)
+
+
 class Pagination:
     page: int
     limit: int
@@ -54,13 +64,10 @@ class Pagination:
     ) -> None:
         self.page = page
         self.limit = limit
-        self.offset = self.get_offset()
+        self.offset = self.__calculate_offset()
 
-    def get_offset(self) -> int:
+    def __calculate_offset(self) -> int:
         return (self.page - 1) * self.limit
-
-    def get_limit(self) -> int:
-        return self.limit
 
     def get_previous_and_next_pages(
         self,

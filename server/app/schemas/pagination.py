@@ -4,7 +4,7 @@ from pydantic.generics import BaseModel, GenericModel
 
 from app.models import RecipeList_Pydantic
 
-T = TypeVar("T")
+T = TypeVar("T", bound=BaseModel)
 
 
 class Cursor(BaseModel):

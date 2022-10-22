@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 from uuid import UUID
 
 from fastapi import (
@@ -10,12 +10,12 @@ from fastapi import (
     UploadFile,
     status,
 )
-from tortoise.functions import Count
 
 import app.schemas.pagination as p
 import app.schemas.recipe as schemas
 import app.schemas.responses as r
-from app.api.deps import Pagination, get_current_user
+import app.utils.sql_helpers as sql
+from app.api.deps import Pagination, get_current_user, get_user_optional
 from app.models import Recipe, Recipe_Pydantic, RecipeList_Pydantic, User
 
 router = APIRouter()
@@ -55,19 +55,19 @@ async def create_recipe(
 
 @router.get("", response_model=p.RecipePage)
 async def list_recipes(
-    sorting: schemas.RecipeSorting = "created_at", pagination: Pagination = Depends()
+    sorting: schemas.RecipeSorting = "created_at",
+    pagination: Pagination = Depends(),
+    user: Optional[User] = Depends(get_user_optional),
 ) -> Any:
-    query = Recipe.all().annotate(likes_count=Count("likes__id"))
+    query = sql.build_recipe_query(user)
     if sorting == "created_at":
         query = query.order_by("-created_at")
     else:
         query = query.order_by("-likes_count", "-created_at")
-    query = query.offset(pagination.get_offset())
-    results_count = await query.limit(pagination.get_limit() + 1).count()
-    recipes = await RecipeList_Pydantic.from_queryset(
-        query.limit(pagination.get_limit())
-    )
-    previous_page, next_page = pagination.get_previous_and_next_pages(results_count)
+    query = query.offset(pagination.offset)
+    p1_count = await query.limit(pagination.limit + 1).count()
+    recipes = await RecipeList_Pydantic.from_queryset(query.limit(pagination.limit))
+    previous_page, next_page = pagination.get_previous_and_next_pages(p1_count)
     return p.RecipePage(
         data=recipes,
         cursor={
@@ -78,10 +78,10 @@ async def list_recipes(
 
 
 @router.get("/{recipe_id}", response_model=Recipe_Pydantic)
-async def get_recipe(recipe_id: UUID) -> Any:
-    recipe = await Recipe.get_or_none(id=recipe_id).annotate(
-        likes_count=Count("likes__id")
-    )
+async def get_recipe(
+    recipe_id: UUID, user: Optional[User] = Depends(get_user_optional)
+) -> Any:
+    recipe = await sql.build_recipe_query(user).get_or_none(id=recipe_id)
     if not recipe:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

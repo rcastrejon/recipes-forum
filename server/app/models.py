@@ -112,13 +112,18 @@ class Recipe(AbstractBase):
     def likes_count(self) -> int:
         raise AttributeError("likes_count is not a readable attribute, use annotate")
 
+    def liked(self) -> Optional[bool]:
+        # Default value of the computed field, will be overwritten by the annotate when
+        # the user is authenticated.
+        return None
+
     def thumbnail_url(self) -> str:
         settings = get_settings()
         return f"{settings.API_URL}/recipes/{self.id}/thumbnail"
 
     class PydanticMeta:
         exclude = ("thumbnail", "thumbnail_media_type", "likes")
-        computed = ("likes_count", "thumbnail_url")
+        computed = ("likes_count", "thumbnail_url", "liked")
 
 
 Tortoise.init_models(["app.models"], "models")
