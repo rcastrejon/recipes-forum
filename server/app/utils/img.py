@@ -4,10 +4,14 @@ from typing import BinaryIO
 from PIL import Image, ImageFilter
 
 
-# Function that takes a file-like image of any format and creates a 1280x720 thumbnail
-# with a blurred version of the original image as the background, and the original
-# image in the foreground. The thumbnail is returned as a bytes object.
 def create_thumbnail(input_image: BinaryIO) -> bytes:
+    """
+    Function that takes a file-like image of any format and creates a 1280x720 thumbnail
+    with a blurred version of the original image as the background, and the original
+    image in the foreground. The thumbnail is returned as a bytes object.
+
+    :raises PIL.UnidentifiedImageError: If the input image is not a valid image.
+    """
     with Image.open(input_image) as img:
         width, height = img.size
         if width > height:

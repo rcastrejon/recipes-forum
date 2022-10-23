@@ -10,6 +10,7 @@ from fastapi import (
     UploadFile,
     status,
 )
+from PIL import UnidentifiedImageError
 
 import app.schemas.pagination as p
 import app.schemas.recipe as schemas
@@ -33,7 +34,13 @@ async def create_recipe(
             "ok": False,
             "message": "Thumbnail must be an image",
         }
-    b_thumbnail = img.create_thumbnail(thumbnail.file)
+    try:
+        b_thumbnail = img.create_thumbnail(thumbnail.file)
+    except UnidentifiedImageError:
+        return {
+            "ok": False,
+            "message": "Thumbnail image type not supported",
+        }
     new_recipe = Recipe.ctor(
         title=recipe_data.title,
         content_md=recipe_data.content_md,
