@@ -1,7 +1,6 @@
-from datetime import datetime
 from typing import Optional
 
-from fastapi import Depends, HTTPException, Query, status
+from fastapi import Cookie, Depends, HTTPException, Query, status
 from fastapi.security import OAuth2PasswordBearer
 from jose.exceptions import JWTError
 from tortoise.exceptions import DoesNotExist
@@ -19,19 +18,46 @@ async def get_current_user(
     settings: Settings = Depends(get_settings),
 ) -> User:
     try:
-        payload = auth.decode_access_token(access_token, settings.ACCESS_TOKEN_SECRET)
-
-        if datetime.fromtimestamp(payload.exp) < datetime.utcnow():
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Token expired",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
+        payload = auth.decode_jwt_token(access_token, settings.ACCESS_TOKEN_SECRET)
         user = await User.get(id=payload.sub)
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except auth.TokenExpiredException:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token expired",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except DoesNotExist:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return user
+
+
+async def get_current_user_cookie(
+    refresh_token: str = Cookie(),
+    settings: Settings = Depends(get_settings),
+) -> User:
+    try:
+        payload = auth.decode_jwt_token(refresh_token, settings.REFRESH_TOKEN_SECRET)
+        user = await User.get(id=payload.sub)
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except auth.TokenExpiredException:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token expired",
             headers={"WWW-Authenticate": "Bearer"},
         )
     except DoesNotExist:

@@ -1,12 +1,13 @@
+from datetime import datetime, timedelta
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from tortoise.exceptions import IntegrityError
 
 import app.schemas.auth as schemas
 import app.schemas.responses as r
-from app.api.deps import get_current_user
+from app.api.deps import get_current_user, get_current_user_cookie
 from app.core import Settings, get_settings
 from app.models import User
 
@@ -34,6 +35,7 @@ async def register_user(register_data: schemas.RegisterUser) -> Any:
 
 @router.post("/login", response_model=schemas.AccessTokenOut)
 async def get_access_token(
+    response: Response,
     form_data: OAuth2PasswordRequestForm = Depends(),
     settings: Settings = Depends(get_settings),
 ) -> Any:
@@ -48,6 +50,29 @@ async def get_access_token(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Incorrect username or password",
         )
+    response.set_cookie(
+        key="refresh_token",
+        value=user.generate_jwt_token(settings.REFRESH_TOKEN_SECRET, 60 * 24 * 30),
+        max_age=60 * 60 * 24 * 30,
+        expires=(datetime.utcnow() + timedelta(days=30)).strftime(  # type: ignore
+            "%a, %d %b %Y %H:%M:%S GMT"
+        ),
+        path="/refresh",
+        httponly=True,
+        samesite="lax",
+        secure=settings.SECURE_COOKIES,
+    )
+    return {
+        "token_type": "bearer",
+        "access_token": user.generate_jwt_token(settings.ACCESS_TOKEN_SECRET),
+    }
+
+
+@router.post("/refresh", response_model=schemas.AccessTokenOut)
+async def refresh_access_token(
+    user: User = Depends(get_current_user_cookie),
+    settings: Settings = Depends(get_settings),
+) -> Any:
     return {
         "token_type": "bearer",
         "access_token": user.generate_jwt_token(settings.ACCESS_TOKEN_SECRET),

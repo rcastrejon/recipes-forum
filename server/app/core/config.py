@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     DATABASE_URL: PostgresDsn
 
     ACCESS_TOKEN_SECRET: str
+    REFRESH_TOKEN_SECRET: str
+    SECURE_COOKIES: bool = False
 
     class Config:
         case_sensitive = True

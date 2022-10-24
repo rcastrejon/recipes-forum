@@ -64,8 +64,8 @@ class User(AbstractBase, TimestampMixin):
             plain_password, self.password_hash
         )
 
-    def generate_jwt_token(self, secret_key: str) -> str:
-        return auth.create_access_token(str(self.id), secret_key)
+    def generate_jwt_token(self, secret_key: str, time_delta: int = 15) -> str:
+        return auth.generate_jwt_token(str(self.id), secret_key, time_delta)
 
     class PydanticMeta:
         include = ("username", "display_name")
