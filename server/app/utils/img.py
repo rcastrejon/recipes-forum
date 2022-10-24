@@ -1,3 +1,4 @@
+from collections import namedtuple
 from io import BytesIO
 from typing import BinaryIO
 
@@ -14,19 +15,23 @@ def create_thumbnail(input_image: BinaryIO) -> bytes:
     """
     with Image.open(input_image) as img:
         width, height = img.size
+        Size = namedtuple("Size", ["width", "height"])
+        size_map: dict[str, Size] = {
+            "x_axis": Size(1280, int(1280 * height / width)),
+            "y_axis": Size(int(720 * width / height), 720),
+        }
         if width > height:
-            new_width = 1280
-            new_height = int(1280 * height / width)
+            new_size = size_map["x_axis"]
         else:
-            new_height = 720
-            new_width = int(720 * width / height)
+            new_size = size_map["y_axis"]
         img = img.convert("RGB")
-        resized_img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+        resized_img = img.resize(new_size, Image.Resampling.LANCZOS)
         background = img.resize((1280, 720), Image.Resampling.NEAREST).filter(
             ImageFilter.GaussianBlur(radius=20)
         )
         background.paste(
-            resized_img, (int((1280 - new_width) / 2), int((720 - new_height) / 2))
+            resized_img,
+            (int((1280 - new_size.width) / 2), int((720 - new_size.height) / 2)),
         )
 
         img_io = BytesIO()
