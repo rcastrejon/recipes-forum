@@ -7,14 +7,14 @@ ARG REFRESH_TOKEN_SECRET
 ARG ACCESS_TOKEN_KEY
 ARG SECRET_COOKIES
 
-FROM python:3.9 as requirements-stage
+FROM python:3.9-slim@sha256:abae63851cda52addbf1efa19b8e6eec4a61724f0bb9ea1363d56791b5be59cb as requirements-stage
 
 WORKDIR /usr/app
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive \
     apt-get install --no-install-recommends --assume-yes \
-    build-essential
+    build-essential gcc git automake make pkg-config x265 libde265-dev libjpeg-dev libtool curl
 
 RUN git clone https://github.com/strukturag/libheif.git libheif \
     && cd libheif \
