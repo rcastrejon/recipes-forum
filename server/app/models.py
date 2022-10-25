@@ -2,6 +2,7 @@ from typing import Optional
 
 import bleach
 import markdown as md
+from bleach_allowlist import markdown_attrs, markdown_tags
 from tortoise import Tortoise, fields
 from tortoise.contrib.pydantic import pydantic_model_creator, pydantic_queryset_creator
 from tortoise.models import Model
@@ -109,7 +110,7 @@ class Recipe(AbstractBase):
     def content(self, content_md: str) -> None:
         self.content_md = content_md
         real_html = md.markdown(content_md)
-        self.content_html = bleach.clean(real_html)
+        self.content_html = bleach.clean(real_html, markdown_tags, markdown_attrs)
 
     def likes_count(self) -> int:
         raise AttributeError("likes_count is not a readable attribute, use annotate")
