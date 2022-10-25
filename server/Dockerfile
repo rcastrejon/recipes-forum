@@ -11,6 +11,19 @@ FROM python:3.9 as requirements-stage
 
 WORKDIR /usr/app
 
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive \
+    apt-get install --no-install-recommends --assume-yes \
+    build-essential
+
+RUN git clone https://github.com/strukturag/libheif.git libheif \
+    && cd libheif \
+    && ./autogen.sh \
+    && ./configure \
+    && make -j4 \
+    && make install \
+    && ldconfig
+
 RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry python3 -
 ENV PATH /opt/poetry/venv/bin/:$PATH
 

@@ -406,6 +406,17 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "pyheif"
+version = "0.7.0"
+description = "Python 3.6+ interface to libheif library"
+category = "main"
+optional = false
+python-versions = ">= 3.6"
+
+[package.dependencies]
+cffi = ">=1.0.0"
+
+[[package]]
 name = "pypika-tortoise"
 version = "0.1.6"
 description = "Forked from pypika and streamline just for tortoise-orm"
@@ -644,7 +655,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "b4528542cb2da973f8c368e25e2c0d2f691a416bc56517414be69950d1f4522b"
+content-hash = "54fbb88072308a1ed80021573b5f206c12c675b7577073dcbe200c05645e88bf"
 
 [metadata.files]
 aiosqlite = [
@@ -1088,6 +1099,16 @@ pydantic = [
 pyflakes = [
     {file = "pyflakes-2.5.0-py2.py3-none-any.whl", hash = "sha256:4579f67d887f804e67edb544428f264b7b24f435b263c4614f384135cea553d2"},
     {file = "pyflakes-2.5.0.tar.gz", hash = "sha256:491feb020dca48ccc562a8c0cbe8df07ee13078df59813b83959cbdada312ea3"},
+]
+pyheif = [
+    {file = "pyheif-0.7.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:14acd1c8d7f97a118da5d84ba988527404324447dc8167420e2cf5a396f992e5"},
+    {file = "pyheif-0.7.0-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:81e5465b9c03d7f6eff17cff5f45bae85399d69728f7859896c6b85cf68ab476"},
+    {file = "pyheif-0.7.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b4147e09262dbaeb52a86fab267e5e557dadddce160878a09f4d7a1be055d1ac"},
+    {file = "pyheif-0.7.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d47cd3fe83c0a501b9e9d8f2b2d324a578a4922a722d92f548116993197a88c2"},
+    {file = "pyheif-0.7.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e6e6f37dc7c169d3c785011fdf5bf83e418bd6ff8d25294df29ec40f4bcad9ae"},
+    {file = "pyheif-0.7.0-pp37-pypy37_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:17804e2c85b116a20e2ae984c3b6e5aa926ba952c669cc81b36f28928c887b58"},
+    {file = "pyheif-0.7.0-pp38-pypy38_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:91553765552972cf384d166ddb04a12713bf00b644ce09ee6f46e88474009833"},
+    {file = "pyheif-0.7.0.tar.gz", hash = "sha256:f5b6e810d79c3a181d6d09dfc522ebcc300f3fc875c0de518d61cfeb00705353"},
 ]
 pypika-tortoise = [
     {file = "pypika-tortoise-0.1.6.tar.gz", hash = "sha256:d802868f479a708e3263724c7b5719a26ad79399b2a70cea065f4a4cadbebf36"},

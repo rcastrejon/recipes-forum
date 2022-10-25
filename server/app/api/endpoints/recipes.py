@@ -35,7 +35,7 @@ async def create_recipe(
             "message": "Thumbnail must be an image",
         }
     try:
-        b_thumbnail = img.create_thumbnail(thumbnail.file)
+        b_thumbnail = img.create_thumbnail(thumbnail.file, thumbnail.content_type)
     except UnidentifiedImageError:
         return {
             "ok": False,
