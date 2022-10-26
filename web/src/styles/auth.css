@@ -1,0 +1,28 @@
+h1{
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    font-style: normal;
+}
+
+h3{
+    font-family: Inter;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 18px;
+    font-style: normal;
+    margin-top: 20pt;
+}
+
+#submit{
+    background-color: #FFDE0A;
+    border-radius: 5pt;
+    border-color: #FFDE0A;
+    color: black;
+    font-size: 10pt;
+}
+
+a{
+    text-decoration: underline;
+}
