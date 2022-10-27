@@ -38,10 +38,10 @@ export const Navbar = () => {
         >
           <List>
             {['Ver Perfil', 'Mis Recetas', 'Favoritos'].map((text, index) => (
-              <a href={routes[index]} className='drawerLinks'>
+              <a href={routes[index]} className='drawerLinks' key={index}>
                 <ListItem key={text} disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
+                    <ListItemButton >
+                        <ListItemIcon >
                             {index == 0 && <AccountCircleIcon />}
                             {index == 1 && <AccountBalanceWalletIcon />}
                             {index == 2 && <StarIcon />}
@@ -55,13 +55,13 @@ export const Navbar = () => {
           <Divider />
             <List>
                 {['Log out'].map((text, index) => (
-                <a href='/login' className='drawerLinks'>
+                <a href='/login' className='drawerLinks' key={index}>
                     <ListItem key={text} disablePadding>
-                        <ListItemButton >
+                        <ListItemButton>
                             <ListItemIcon>
-                                {index == 0 && <LogoutIcon /> }
+                                {index == 0 && <LogoutIcon/> }
                             </ListItemIcon>
-                            <ListItemText primary={text} />
+                            <ListItemText primary={text}/>
                         </ListItemButton>
                     </ListItem>
                 </a>
