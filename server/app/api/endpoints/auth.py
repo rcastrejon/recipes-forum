@@ -33,7 +33,7 @@ async def register_user(register_data: schemas.RegisterUser) -> Any:
     }
 
 
-@router.post("/login", response_model=schemas.AccessTokenOut)
+@router.post("/login", response_model=r.AccessToken)
 async def get_access_token(
     response: Response,
     form_data: OAuth2PasswordRequestForm = Depends(),
@@ -68,7 +68,7 @@ async def get_access_token(
     }
 
 
-@router.post("/refresh", response_model=schemas.AccessTokenOut)
+@router.post("/refresh", response_model=r.AccessToken)
 async def refresh_access_token(
     user: User = Depends(get_current_user_cookie),
     settings: Settings = Depends(get_settings),

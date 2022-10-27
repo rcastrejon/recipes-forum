@@ -12,3 +12,16 @@ class OkMessage(BaseModel):
                 "message": "This is a success message",
             }
         }
+
+
+class AccessToken(BaseModel):
+    token_type: str
+    access_token: str
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "token_type": "bearer",
+                "access_token": "example_access_token",
+            }
+        }

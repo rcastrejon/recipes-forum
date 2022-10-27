@@ -16,7 +16,7 @@ import app.schemas.pagination as p
 import app.schemas.recipe as schemas
 import app.schemas.responses as r
 import app.utils.img as img
-import app.utils.sql_helpers as sql
+import app.utils.orm_extras as extras
 from app.api.deps import Pagination, get_current_user, get_user_optional
 from app.models import Recipe, Recipe_Pydantic, RecipeList_Pydantic, User
 
@@ -61,7 +61,7 @@ async def list_recipes(
     pagination: Pagination = Depends(),
     user: Optional[User] = Depends(get_user_optional),
 ) -> Any:
-    query = sql.build_recipe_query(user)
+    query = extras.build_recipe_query(user)
     if sorting == "created_at":
         query = query.order_by("-created_at")
     else:
@@ -83,7 +83,7 @@ async def list_recipes(
 async def get_recipe(
     recipe_id: UUID, user: Optional[User] = Depends(get_user_optional)
 ) -> Any:
-    recipe = await sql.build_recipe_query(user).get_or_none(id=recipe_id)
+    recipe = await extras.build_recipe_query(user).get_or_none(id=recipe_id)
     if not recipe:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

@@ -8,7 +8,7 @@ from tortoise.contrib.pydantic import pydantic_model_creator, pydantic_queryset_
 from tortoise.models import Model
 
 from app.core import get_settings
-from app.utils import auth
+from app.utils import jwt
 
 
 class TimestampMixin:
@@ -58,15 +58,15 @@ class User(AbstractBase, TimestampMixin):
 
     @password.setter
     def password(self, plain_password: str) -> None:
-        self.password_hash = auth.generate_hash_from_plain_password(plain_password)
+        self.password_hash = jwt.generate_hash_from_plain_password(plain_password)
 
     def verify_plain_password(self, plain_password: str) -> bool:
-        return auth.verify_plain_password_against_hash(
+        return jwt.verify_plain_password_against_hash(
             plain_password, self.password_hash
         )
 
     def generate_jwt_token(self, secret_key: str, time_delta: int = 15) -> str:
-        return auth.generate_jwt_token(str(self.id), secret_key, time_delta)
+        return jwt.generate_jwt_token(str(self.id), secret_key, time_delta)
 
     class PydanticMeta:
         include = ("username", "display_name")

@@ -5,9 +5,9 @@ from fastapi.security import OAuth2PasswordBearer
 from jose.exceptions import JWTError
 from tortoise.exceptions import DoesNotExist
 
-import app.utils.auth as auth
 from app.core import Settings, get_settings
 from app.models import User
+from app.utils import jwt
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 optional_oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", auto_error=False)
@@ -17,56 +17,18 @@ async def get_current_user(
     access_token: str = Depends(oauth2_scheme),
     settings: Settings = Depends(get_settings),
 ) -> User:
-    try:
-        payload = auth.decode_jwt_token(access_token, settings.ACCESS_TOKEN_SECRET)
-        user = await User.get(id=payload.sub)
-    except JWTError:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Could not validate credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    except auth.TokenExpiredException:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token expired",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    except DoesNotExist:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    return user
+    return await __decode_jwt_token_and_get_user(
+        access_token, settings.ACCESS_TOKEN_SECRET
+    )
 
 
 async def get_current_user_cookie(
     refresh_token: str = Cookie(),
     settings: Settings = Depends(get_settings),
 ) -> User:
-    try:
-        payload = auth.decode_jwt_token(refresh_token, settings.REFRESH_TOKEN_SECRET)
-        user = await User.get(id=payload.sub)
-    except JWTError:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Could not validate credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    except auth.TokenExpiredException:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token expired",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    except DoesNotExist:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    return user
+    return await __decode_jwt_token_and_get_user(
+        refresh_token, settings.REFRESH_TOKEN_SECRET
+    )
 
 
 async def get_user_optional(
@@ -75,7 +37,9 @@ async def get_user_optional(
 ) -> Optional[User]:
     if not access_token:
         return None
-    return await get_current_user(access_token, settings)
+    return await __decode_jwt_token_and_get_user(
+        access_token, settings.ACCESS_TOKEN_SECRET
+    )
 
 
 class Pagination:
@@ -102,3 +66,31 @@ class Pagination:
         previous_page = self.page - 1 if self.page > 1 else None
         next_page = self.page + 1 if results_count > self.limit else None
         return (previous_page, next_page)
+
+
+async def __decode_jwt_token_and_get_user(token: str, secret: str) -> User:
+    """
+    Decode authentication token and return user object.
+    :raises HTTPException: If token is invalid or user does not exist.
+    """
+    try:
+        payload = jwt.decode_jwt_token(token, secret)
+        return await User.get(id=payload.sub)
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except jwt.TokenExpiredException:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token expired",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except DoesNotExist:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+            headers={"WWW-Authenticate": "Bearer"},
+        )

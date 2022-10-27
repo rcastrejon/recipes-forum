@@ -5,7 +5,7 @@ from tortoise.expressions import RawSQL
 from tortoise.functions import Count
 
 import app.schemas.pagination as p
-import app.utils.sql_helpers as sql
+import app.utils.orm_extras as extras
 from app.api.deps import Pagination, get_current_user
 from app.models import Like, Recipe, RecipeList_Pydantic, User, User_Pydantic
 
@@ -21,7 +21,7 @@ async def get_logged_user(user: User = Depends(get_current_user)) -> Any:
 async def get_created_recipes(
     pagination: Pagination = Depends(), user: User = Depends(get_current_user)
 ) -> Any:
-    query = sql.build_recipe_query(user, created_by=user).offset(pagination.offset)
+    query = extras.build_recipe_query(user, created_by=user).offset(pagination.offset)
     p1_count = await query.limit(pagination.limit + 1).count()
     recipes = await RecipeList_Pydantic.from_queryset(query.limit(pagination.limit))
     previous_page, next_page = pagination.get_previous_and_next_pages(p1_count)
