@@ -4,6 +4,8 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { MostVoted } from './recipes/MostVoted';
+import { Recientes } from './recipes/Recientes';
+import { EnVivo } from './recipes/EnVivo';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -45,29 +47,31 @@ export const Dashboard = () => {
   };
     
     return (
-        <>
-            <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Más Votos" {...a11yProps(0)} />
-          <Tab label="Recientes" {...a11yProps(1)} />
-          <Tab label="En Vivo" {...a11yProps(2)} />
-        </Tabs>
-      </Box>
-      <TabPanel value={value} index={0}>
-        <div className='d-flex flex-wrap'>
-            <MostVoted/>
-        </div>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-    </Box>
-
-
-        </>
+      <>
+        <Box sx={{ width: '100%' }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+              <Tab label="Más Votos" {...a11yProps(0)} />
+              <Tab label="Recientes" {...a11yProps(1)} />
+              <Tab label="En Vivo" {...a11yProps(2)} />
+            </Tabs>
+          </Box>
+          <TabPanel value={value} index={0}>
+            <div className='d-flex flex-wrap'>
+                <MostVoted/>
+            </div>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <div className='d-flex flex-wrap'>
+              <Recientes/>
+            </div>
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <div className='d-flex flex-wrap'>
+              <EnVivo/>
+            </div>
+          </TabPanel>
+        </Box>
+      </>
     )
 }

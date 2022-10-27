@@ -4,7 +4,7 @@ import { Recipe } from "../../interfaces/Recipe";
 import {RecipeReviewCard} from "./CustomCard";
 import Grid from '@mui/material/Unstable_Grid2';
 
-export const MostVoted= () => {
+export const Recientes= () => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
 
     useEffect(()=>{
