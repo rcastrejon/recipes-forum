@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { mostVotedCards } from "../../placeHolders/DashboardCards";
 import { Recipe } from "../../interfaces/Recipe";
-import {RecipeReviewCard} from "./CustomCard";
+import {CutsomCard} from "./CustomCard";
 import Grid from '@mui/material/Unstable_Grid2';
 
 export const MostVoted= () => {
@@ -20,8 +20,8 @@ export const MostVoted= () => {
             {
                 recipes.map(
                     ( _item, _index ) => (
-                        <Grid justifySelf={'flex-start'}>
-                            <RecipeReviewCard recipe={_item} key={_index}/>
+                        <Grid justifySelf={'flex-start'} key={_index}>
+                            <CutsomCard recipe={_item} key={_index}/>
                         </Grid>
                     ) 
                 )

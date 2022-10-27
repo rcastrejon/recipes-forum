@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Token de la suite
     const [dgtoken] = useState<string>(() => {
-        console.log('hello');
         let temp: string = 'Bearer: ' + localStorage.getItem('security-token');
         return temp || '';
     });

@@ -7,8 +7,6 @@ import { Register } from '../components/Auth/Register';
 import { Dashboard,Navbar } from '../components/index';
 
 export const AppRouter = () => {
-    console.log('AppRouter');
-    
     return (
         <Router>
             <AuthProvider>
