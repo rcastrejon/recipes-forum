@@ -5,6 +5,10 @@ import { PermissionProvider } from '../auth/providers/PermProvider';
 import { Login } from '../components/Auth/Login';
 import { Register } from '../components/Auth/Register';
 import { Dashboard,Navbar } from '../components/index';
+import { Favoritos } from '../components/Screens/Favoritos';
+import { MisRecetas } from '../components/Screens/MisRecetas';
+import { Perfil } from '../components/Screens/Perfil';
+import { SingleRecipe } from '../components/Screens/SingleRecipe';
 
 export const AppRouter = () => {
     return (
@@ -30,6 +34,10 @@ export const AppRouter = () => {
                                             <Route path='/login' element={<Login />} />
                                             <Route path='/register' element={<Register />} />
                                             <Route path='/dashboard' element={<Dashboard />} />
+                                            <Route path='/perfil' element={<Perfil/>}/>
+                                            <Route path='/mis-recetas' element={<MisRecetas/>}/>
+                                            <Route path='/favoritos' element={<Favoritos/>}/>
+                                            <Route path='/recipe/:id' element={<SingleRecipe/>}/>
                                         </Routes>
                                     </section>
                                 </main>

@@ -14,7 +14,7 @@ import '../styles/navbar.css';
 
 export const Navbar = () => {
     const [isShown, setIsShown] = useState(false);
-    const routes = ['/perfil','mis-recetas','/favoritos'];
+    const routes:string[] = ['/perfil','mis-recetas','/favoritos'];
 
     const toggleDrawer =
     (isOpen: boolean) =>
@@ -38,8 +38,8 @@ export const Navbar = () => {
         >
           <List>
             {['Ver Perfil', 'Mis Recetas', 'Favoritos'].map((text, index) => (
-              <a href={routes[index]} className='drawerLinks' key={index}>
-                <ListItem key={text} disablePadding>
+              <div className='drawerLinks' key={index}>
+                <ListItem key={text} disablePadding onClick={()=>{window.location.href=routes[index]}}>
                     <ListItemButton >
                         <ListItemIcon >
                             {index == 0 && <AccountCircleIcon />}
@@ -49,14 +49,14 @@ export const Navbar = () => {
                     <ListItemText primary={text}/>
                     </ListItemButton>
                 </ListItem>
-              </a>
+              </div>
             ))}
           </List>
           <Divider />
             <List>
                 {['Log out'].map((text, index) => (
-                <a href='/login' className='drawerLinks' key={index}>
-                    <ListItem key={text} disablePadding>
+                <div className='drawerLinks' key={index}>
+                    <ListItem key={text} disablePadding onClick={()=>{window.location.href = '/login'}}>
                         <ListItemButton>
                             <ListItemIcon>
                                 {index == 0 && <LogoutIcon/> }
@@ -64,8 +64,7 @@ export const Navbar = () => {
                             <ListItemText primary={text}/>
                         </ListItemButton>
                     </ListItem>
-                </a>
-                
+                </div>
                 ))}
             </List>
         </Box>

@@ -51,9 +51,9 @@ export const Dashboard = () => {
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab label="Más Votos" {...a11yProps(0)} />
-              <Tab label="Recientes" {...a11yProps(1)} />
-              <Tab label="En Vivo" {...a11yProps(2)} />
+              <Tab label="Más Votados" {...a11yProps(0)} sx={{fontSize:'10pt'}}/>
+              <Tab label="Recientes" {...a11yProps(1)} sx={{fontSize:'10pt'}}/>
+              <Tab label="En Vivo" {...a11yProps(2)} sx={{fontSize:'10pt'}}/>
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>

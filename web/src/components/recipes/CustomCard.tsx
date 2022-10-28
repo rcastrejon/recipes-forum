@@ -5,7 +5,6 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { Recipe } from '../../interfaces/Recipe';
 import Typography from '@mui/material/Typography';
@@ -71,19 +70,17 @@ export const CutsomCard: React.FC<RecipeReviewCardProps> = ({recipe}) => {
   return (
     <Card sx={{ maxWidth: 270 }}>
       <CardHeader
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
+        onClick={()=>{window.location.href='/recipe/'+recipe.id}}
         title={recipe.title}
-        subheader={'@'+recipe.created_by.display_name + ' - ' + timeSince(recipe.created_at) + ' días'}
+        subheader={'@'+recipe.created_by.username + ' - ' + timeSince(recipe.created_at) + ' días'}
       />
       <CardMedia
         component="img"
         height="194"
         image={recipe.thumbnail_url}
         alt="Paella dish"
+        sx={{borderRadius:3}}
+        onClick={()=>{window.location.href='/recipe/'+recipe.id}}
       />
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites" onClick={handleLike}>
