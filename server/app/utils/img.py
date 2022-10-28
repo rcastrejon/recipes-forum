@@ -1,9 +1,13 @@
-from collections import namedtuple
 from io import BytesIO
-from typing import BinaryIO
+from typing import BinaryIO, NamedTuple
 
 import pyheif
 from PIL import Image, ImageFilter
+
+
+class Size(NamedTuple):
+    width: int
+    height: int
 
 
 def create_thumbnail(input_image: BinaryIO, media_type: str) -> bytes:
@@ -27,8 +31,7 @@ def create_thumbnail(input_image: BinaryIO, media_type: str) -> bytes:
     else:
         img = Image.open(input_image)
     width, height = img.size
-    Size = namedtuple("Size", ["width", "height"])
-    size_map: dict[str, Size] = {
+    size_map = {
         "x_axis": Size(1280, int(1280 * height / width)),
         "y_axis": Size(int(720 * width / height), 720),
     }
