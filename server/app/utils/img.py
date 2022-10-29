@@ -2,7 +2,7 @@ from io import BytesIO
 from typing import BinaryIO, NamedTuple
 
 import pyheif
-from PIL import Image, ImageFilter
+from PIL import Image, ImageEnhance, ImageFilter
 
 
 class Size(NamedTuple):
@@ -35,15 +35,23 @@ def create_thumbnail(input_image: BinaryIO, media_type: str) -> bytes:
         "x_axis": Size(1280, int(1280 * height / width)),
         "y_axis": Size(int(720 * width / height), 720),
     }
-    if width > height:
+    if width / height > 1280 / 720:
         new_size = size_map["x_axis"]
+        other_size = size_map["y_axis"]
+        box = (other_size.width // 2 - 640, 0, other_size.width // 2 + 640, 720)
     else:
         new_size = size_map["y_axis"]
+        other_size = size_map["x_axis"]
+        box = (0, other_size.height // 2 - 360, 1280, other_size.height // 2 + 360)
     img = img.convert("RGB")
     resized_img = img.resize(new_size, Image.Resampling.LANCZOS)
-    background = img.resize((1280, 720), Image.Resampling.NEAREST).filter(
-        ImageFilter.GaussianBlur(radius=20)
+    background = (
+        img.resize(other_size, Image.Resampling.NEAREST)
+        .filter(ImageFilter.GaussianBlur(radius=20))
+        .crop(box)
     )
+    enhancer = ImageEnhance.Brightness(background)
+    background = enhancer.enhance(0.90)
     background.paste(
         resized_img,
         (int((1280 - new_size.width) / 2), int((720 - new_size.height) / 2)),
