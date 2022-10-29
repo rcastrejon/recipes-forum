@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { mostVotedCards } from "../../placeHolders/DashboardCards";
 import { Recipe } from "../../interfaces/Recipe";
-import {CutsomCard} from "./CustomCard";
+import {RecipePreview} from "../Ui/RecipePreview";
 import Grid from '@mui/material/Unstable_Grid2';
 
-export const Recientes= () => {
+export const MostVoted= () => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
 
     useEffect(()=>{
@@ -21,7 +21,7 @@ export const Recientes= () => {
                 recipes.map(
                     ( _item, _index ) => (
                         <Grid justifySelf={'flex-start'} key={_index}>
-                            <CutsomCard recipe={_item } key={_index}/>
+                            <RecipePreview recipe={_item} key={_index}/>
                         </Grid>
                     ) 
                 )

@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { oneRecipe } from "../../placeHolders/DashboardCards";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
+//Componente que genera la vista de una receta en particular
 export const SingleRecipe: React.FC = () => {
     //const { id } = useParams();
     

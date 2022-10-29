@@ -34,7 +34,7 @@ export const mostVotedCards = [
         "username": "JannetDoe",
         "display_name": "Jane"
       },
-      "likes_count": 4,
+      "likes_count": 5,
       "thumbnail_url": "/sandwichImage.png",
       "liked": true
     },
@@ -47,22 +47,22 @@ export const mostVotedCards = [
         "username": "JaneDoe",
         "display_name": "Jane"
       },
-      "likes_count": 4,
+      "likes_count": 6,
       "thumbnail_url": "/sandwichImage.png",
-      "liked": true
+      "liked": false
     },
     {
       "created_at": "2022-10-24T21:08:34.755Z",
       "updated_at": "2022-10-26T21:08:34.755Z",
       "id": "3fa85f64-5717-4562-b3fc-2c963f66afa5",
-      "title": "Sandwich 5",
+      "title": "Sandwich with long name as a test",
       "created_by": {
         "username": "JannisDoe",
         "display_name": "Jane"
       },
-      "likes_count": 4,
+      "likes_count": 7,
       "thumbnail_url": "/sandwichImage.png",
-      "liked": true
+      "liked": false
     }
 ]
 

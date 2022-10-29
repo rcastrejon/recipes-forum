@@ -31,9 +31,16 @@ interface RecipeReviewCardProps {
   recipe: Recipe;
 }
 
-export const CutsomCard: React.FC<RecipeReviewCardProps> = ({recipe}) => {
+export const RecipePreview: React.FC<RecipeReviewCardProps> = ({recipe}) => {
   const [expanded, setExpanded] = React.useState(false);
   const [likes,setLikes] = React.useState(recipe.likes_count);
+  const [liked,setLiked] = React.useState(recipe.liked);
+
+    const handleLike = () => { 
+        const addition = liked ? -1 : 1;
+        setLikes(likes + addition);
+        setLiked(!liked);
+    }
   
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -60,11 +67,7 @@ export const CutsomCard: React.FC<RecipeReviewCardProps> = ({recipe}) => {
   } 
 
   const downloadImage = () => {
-    saveAs(recipe.thumbnail_url, `${recipe.title}.jpg`) // Put your image url here.
-  }
-
-  const handleLike = () => { 
-    setLikes(likes + 1);
+    saveAs(recipe.thumbnail_url, `${recipe.title}.jpg`) 
   }
 
   return (
@@ -72,25 +75,26 @@ export const CutsomCard: React.FC<RecipeReviewCardProps> = ({recipe}) => {
       <CardHeader
         onClick={()=>{window.location.href='/recipe/'+recipe.id}}
         title={recipe.title}
+        sx={{cursor:'pointer'}}
         subheader={'@'+recipe.created_by.username + ' - ' + timeSince(recipe.created_at) + ' días'}
       />
       <CardMedia
         component="img"
         height="194"
         image={recipe.thumbnail_url}
-        alt="Paella dish"
-        sx={{borderRadius:3}}
+        alt="Dish"
+        sx={{borderRadius:3, cursor:'pointer'}}
         onClick={()=>{window.location.href='/recipe/'+recipe.id}}
       />
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites" onClick={handleLike}>
-          <span style={{fontSize:'15px',marginTop:'5px'}} className='align-text-bottom'>
+        <IconButton onClick={handleLike}>
+          <span style={{fontSize:'15px',marginTop:'5px',marginRight:'3px'}} className='align-text-bottom'>
             {likes}
           </span>
-          <ThumbUpIcon/>
+          <ThumbUpIcon sx={{color: liked ? '#387780':'gray'}}/>
         </IconButton>
         
-        <IconButton aria-label="share" onClick={downloadImage}>
+        <IconButton onClick={downloadImage}>
           <DownloadIcon/>
         </IconButton>
 

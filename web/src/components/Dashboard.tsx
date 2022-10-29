@@ -3,9 +3,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { MostVoted } from './recipes/MostVoted';
-import { Recientes } from './recipes/Recientes';
-import { EnVivo } from './recipes/EnVivo';
+import { MostVoted } from './RecipeLists/MostVoted';
+import { Recientes } from './RecipeLists/Recientes';
+import { EnVivo } from './RecipeLists/EnVivo';
 
 interface TabPanelProps {
   children?: React.ReactNode;
