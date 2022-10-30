@@ -105,7 +105,9 @@ async def get_recipe_thumbnail(
             detail="Recipe not found",
         )
     return Response(
-        content=recipe["thumbnail"], media_type=recipe["thumbnail_media_type"]
+        content=recipe["thumbnail"],
+        media_type=recipe["thumbnail_media_type"],
+        headers={"Cache-Control": "public, max-age=31536000, immutable"},
     )
 
 
