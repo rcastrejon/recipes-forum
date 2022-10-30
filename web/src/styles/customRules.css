@@ -17,11 +17,13 @@
     border-radius: 5pt;
     border-color: #FFDE0A;
     color: black;
+    width: 70px;
 }
 
 #buttonAdd[disabled]{
     background-color: #806e00 !important;
     border-color: #806e00 !important;
+    width: 70px;
 }
 
 #buttonAdd:hover{
@@ -63,4 +65,9 @@
 .textArea{
     color:#01172F;
     border:solid 2px #C3ACCE;
+}
+
+.labelForFile{
+    text-align: start !important;
+    margin-top: 13px;
 }
