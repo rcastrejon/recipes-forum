@@ -1,0 +1,66 @@
+.myButtonContainer{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#buttonAdd{
+    background-color: #FFDE0A !important;
+    cursor: pointer;
+    color: #000000 !important;
+
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 24px;
+    font-style: normal;
+
+    border-radius: 5pt;
+    border-color: #FFDE0A;
+    color: black;
+}
+
+#buttonAdd[disabled]{
+    background-color: #806e00 !important;
+    border-color: #806e00 !important;
+}
+
+#buttonAdd:hover{
+    transform: translateY(-5px);
+}
+
+.tileInMyRecipe{
+    margin:0;
+    max-width:100px;
+    font-size:14px;
+    cursor: pointer;
+}
+
+.numbersInMyRecipe{
+    font-size: 15px;
+    margin-top: 5px;
+    margin-right: 3px;
+}
+
+.buttonIcon{
+    padding: 0;
+    height: 25px;
+}
+
+.smallInput{
+    width: 80px;
+    height: 38px;
+    font-size: 15px;
+    padding-top: 0.375rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0.375rem;
+    padding-left: 0.75rem;
+}
+
+.smallTagForInput{
+    margin-top: 13px;
+}
+
+.textArea{
+    color:#01172F;
+    border:solid 2px #C3ACCE;
+}

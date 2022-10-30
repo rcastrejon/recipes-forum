@@ -5,6 +5,7 @@ import { PermissionProvider } from '../auth/providers/PermProvider';
 import { Login } from '../components/Auth/Login';
 import { Register } from '../components/Auth/Register';
 import { Dashboard,Navbar } from '../components/index';
+import { EditRecipe } from '../components/Screens/EditRecipe';
 import { Favoritos } from '../components/Screens/Favoritos';
 import { MisRecetas } from '../components/Screens/MisRecetas';
 import { Perfil } from '../components/Screens/Perfil';
@@ -38,6 +39,8 @@ export const AppRouter = () => {
                                             <Route path='/mis-recetas' element={<MisRecetas/>}/>
                                             <Route path='/favoritos' element={<Favoritos/>}/>
                                             <Route path='/recipe/:id' element={<SingleRecipe/>}/>
+                                            <Route path='/editRecipe/:id' element={<EditRecipe/>}/>
+                                            <Route path='/editRecipe' element={<EditRecipe/>}/>
                                         </Routes>
                                     </section>
                                 </main>

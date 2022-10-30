@@ -14,7 +14,7 @@ import '../styles/navbar.css';
 
 export const Navbar = () => {
     const [isShown, setIsShown] = useState(false);
-    const routes:string[] = ['/perfil','mis-recetas','/favoritos'];
+    const routes:string[] = ['/perfil','/mis-recetas','/favoritos'];
 
     const toggleDrawer =
     (isOpen: boolean) =>

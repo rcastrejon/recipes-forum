@@ -34,7 +34,7 @@ export const Login = () => {
           
           <div style={{marginTop:'20pt'}}>
             <h3> Nombre de usuario </h3>
-            <input defaultValue="test" {...register("name", { required: true })} autoComplete='off' className="form-control"/>
+            <input {...register("name", { required: true })} autoComplete='off' className="form-control"/>
 
             <h3> Contraseña </h3>
             <input {...register("password", { required: true })} autoComplete='off' type={'password'} className="form-control"/>

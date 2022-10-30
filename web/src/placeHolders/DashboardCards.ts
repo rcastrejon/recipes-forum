@@ -113,3 +113,34 @@ export const oneRecipe = {
   thumbnail_url: '/sandwichImage.png',
   liked: true
 }
+
+export const editRecipe = {
+  costo: 50,
+  tiempo: 10,
+  ingredientes: 
+  `<ul>
+    <li> 1 slice of bread </li>
+    <li> 1 slice of cheese </li>
+    <li> 1 slice of ham </li>
+    <li> 1 slice of tomato </li>
+    <li> 1 slice of cucumber </li>
+    <li> 1 slice of lettuce </li>
+    <li> 1 slice of onion </li>
+    <li> 1 slice of mustard </li>
+    <li> 1 slice of ketchup </li>
+  </ul>`,
+  pasos:
+  `<ol>
+  <li> Put the bread on a plate </li>
+  <li> Put the cheese on the bread </li>
+  <li> Put the ham on the bread </li>
+  <li> Put the tomato on the bread </li>
+  <li> Put the cucumber on the bread </li>
+  <li> Put the lettuce on the bread </li>
+  <li> Put the onion on the bread </li>
+  <li> Put the mustard on the bread </li>
+  <li> Put the ketchup on the bread </li>
+  <li> Put the other slice of bread on top </li>
+  </ol>`,
+  titulo: 'Sandwich',
+}

@@ -56,16 +56,18 @@ export const MyRecipe: React.FC<Props> = ({recipe}) => {
                 <Item elevation={12}>
                 <div className="d-flex justify-content-between mb-3">
                     <div className='row p-2'>
-                        <h1 style={{margin:0,maxWidth:'100px',fontSize:'14px'}}>{renderTitle()}</h1>
-                        <IconButton onClick={handleLike} sx={{padding:0,height:'25px',textAlign:'start',marginTop:'10px'}}>
-                            <span style={{fontSize:'15px',marginTop:'5px',marginRight:'3px'}} className='align-text-bottom'>
+                        <h1 className='tileInMyRecipe' onClick={()=>{window.location.href='/editRecipe/'+recipe.id}}>
+                            {renderTitle()+' ↗️'}
+                        </h1>
+                        <IconButton onClick={handleLike} className='buttonIcon'>
+                            <span className='numbersInMyRecipe align-text-bottom'>
                                 {likes}
                             </span>
                             <ThumbUpIcon sx={{color: liked ? '#387780':'gray'}}/>
                         </IconButton>
                         
-                        <IconButton sx={{padding:0,height:'25px'}}>
-                            <span style={{fontSize:'15px',marginTop:'5px',marginRight:'3px'}} className='align-text-bottom'>
+                        <IconButton className='buttonIcon'>
+                            <span className='numbersInMyRecipe align-text-bottom'>
                                 {recipe.likes_count}
                             </span>
                             <VisibilityIcon sx={{color: '#E83151'}}/>

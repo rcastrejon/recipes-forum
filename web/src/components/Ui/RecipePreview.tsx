@@ -37,9 +37,9 @@ export const RecipePreview: React.FC<RecipeReviewCardProps> = ({recipe}) => {
   const [liked,setLiked] = React.useState(recipe.liked);
 
     const handleLike = () => { 
-        const addition = liked ? -1 : 1;
-        setLikes(likes + addition);
-        setLiked(!liked);
+      const addition = liked ? -1 : 1;
+      setLikes(likes + addition);
+      setLiked(!liked);
     }
   
   const handleExpandClick = () => {
