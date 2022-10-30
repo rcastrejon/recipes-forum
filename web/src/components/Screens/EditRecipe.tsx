@@ -60,7 +60,7 @@ export const EditRecipe: React.FC = () => {
 
     const onSubmit = (data:any) => {
         //window.location.href = '/mis-recetas';
-        console.log(data);
+        //console.log(data);
         
     };
 
