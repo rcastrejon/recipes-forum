@@ -10,14 +10,14 @@
 
     font-family: Inter;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 24px;
     font-style: normal;
 
     border-radius: 5pt;
     border-color: #FFDE0A;
     color: black;
-    width: 70px;
+    width: 170px;
 }
 
 #buttonAdd[disabled]{

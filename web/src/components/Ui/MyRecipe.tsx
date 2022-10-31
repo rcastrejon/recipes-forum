@@ -66,12 +66,12 @@ export const MyRecipe: React.FC<Props> = ({recipe}) => {
                             <ThumbUpIcon sx={{color: liked ? '#387780':'gray'}}/>
                         </IconButton>
                         
-                        <IconButton className='buttonIcon'>
+                        {/* <IconButton className='buttonIcon'>
                             <span className='numbersInMyRecipe align-text-bottom'>
                                 {recipe.likes_count}
                             </span>
                             <VisibilityIcon sx={{color: '#E83151'}}/>
-                        </IconButton>
+                        </IconButton> */}
                     </div>
                     
                     <CardMedia
