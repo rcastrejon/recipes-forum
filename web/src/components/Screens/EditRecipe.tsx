@@ -36,6 +36,7 @@ export const EditRecipe: React.FC = () => {
         register,
         handleSubmit,
         watch,
+        getValues,
         setValue,
         formState: { errors,isDirty }
       } = useForm({
@@ -53,20 +54,21 @@ export const EditRecipe: React.FC = () => {
         const key = e.key;
 
         if (key === 'e' || key === '+' || key === '-' || key === '.' ||
-            key === ' ' || key == 'Shift') {
+            key === ' ' || key == 'Shift' ||key === 'E' ) {
             e.preventDefault();
         }
     }
 
-    const onSubmit = (data:any) => {
-        //window.location.href = '/mis-recetas';
-        //console.log(data);
+    const onSubmit = (e:React.FormEvent<HTMLFormElement>,data:any) => {
+        e.preventDefault();
+        window.location.href = '/mis-recetas';
+        console.log(data);
         
     };
 
     return (
         <div style={{maxWidth:700,margin:'auto'}}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={(e)=>onSubmit(e,getValues())}>
 
                 <h1>{id? 'Editar Receta*' : 'Nueva Receta*'}</h1>
 
@@ -129,7 +131,7 @@ export const EditRecipe: React.FC = () => {
 
                 <br/>
 
-                <Input id='buttonAdd' type="submit" value="Enviar" disabled={!isDirty} style={{width:'80px'}}/>
+                <input id='buttonAdd' type="submit" value="Enviar" disabled={!isDirty} style={{width:'80px'}}/>
                 </div>
 
             </form>
