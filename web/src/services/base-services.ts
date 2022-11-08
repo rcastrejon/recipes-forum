@@ -13,6 +13,7 @@ const request = (method: string, options: RequestInit): Promise<any> => {
 
     return fetch(apiUrl.concat(method), options)
         .catch((resp) => {
+            //window.location.href = '/login';
             throw new Error(resp);
         })
         .then(async (resp) => {
@@ -25,13 +26,13 @@ const request = (method: string, options: RequestInit): Promise<any> => {
                 return resp;
             }
             else {
-                // console.log('enters else',resp.status,resp.url);
-                // console.log('location',window.location.href);
-                // if(window.location.href.includes('/register')) return resp;
+                if(window.location.href.includes('/register')) return resp;
+                if(window.location.href.includes('/dashboard')) return resp;
+                if(window.location.href.includes('/recipe')) return resp;
                 
-                // if(!window.location.href.includes('/login')){
-                //     window.location.href = '/login';
-                // }
+                if(!window.location.href.includes('/login')){
+                    window.location.href = '/login';
+                }
             }
             return resp;
         });

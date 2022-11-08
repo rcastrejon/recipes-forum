@@ -3,15 +3,11 @@ import Cookies from 'universal-cookie';
 import { User } from '../types/User';
 import { AuthContext, UserContext } from '../context/AuthContext';
 import * as appService from '../../services/services';
+import { CustomSnackbar } from '../../components/Ui/CustomSnackbar';
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const cookies = new Cookies();
-
-    // Token de la suite
-    const [dgtoken] = useState<string>(() => {
-        let temp: string = 'Bearer: ' + localStorage.getItem('security-token');
-        return temp || '';
-    });
+    const [inputText, setInputText] = useState('Por favor incia sesión 💡');
 
     // Token de la aplicacion
     const [token, setToken] = useState(localStorage.getItem("security-token") || 'holder');
@@ -24,27 +20,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     useEffect(() => {
-        if (!Boolean(dgtoken)) { // si la suite no esta logueado
-            localStorage.clear();
-            if (import.meta.env.VITE_PRODUCTION === 'true') {
-                window.location.href = '/login';
-            }
-            return;
-        }
-
-        return () => {
-            // VALIDA TOKEN EN EL BACKEND
-            // appService.hasValidToken()
-            //     .then(async (resp) => {
-            //         return (resp.ok);
-            //     });
-            
-        }
+        if(cookies.get('isRegisterSuccessful') == 'true') setInputText('Registro exitoso 🎉');
+        appService.hasValidToken()
+                .then(async (resp) => {
+                    return (resp.ok);
+                });
     }, [token]);
 
     return (
         <AuthContext.Provider value={token}>
             {children}
+            {(token === 'holder') &&
+                <CustomSnackbar inputText={inputText}/>}
         </AuthContext.Provider>
     )
 }

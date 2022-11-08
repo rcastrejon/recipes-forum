@@ -56,7 +56,9 @@ export const Navbar = () => {
             <List>
                 {['Log out'].map((text, index) => (
                 <div className='drawerLinks' key={index}>
-                    <ListItem key={text} disablePadding onClick={()=>{window.location.href = '/login'}}>
+                    <ListItem key={text} disablePadding onClick={()=>{
+                        localStorage.setItem('security-token','');
+                        window.location.href = '/login'}}>
                         <ListItemButton>
                             <ListItemIcon>
                                 {index == 0 && <LogoutIcon/> }
