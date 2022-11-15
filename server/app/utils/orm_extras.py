@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Optional
 
 from tortoise.expressions import RawSQL
 from tortoise.functions import Count
@@ -9,7 +9,6 @@ from app.models import Recipe, User
 
 def build_recipe_query(
     user: Optional[User] = None,
-    **filters: Any,
 ) -> QuerySet[Recipe]:
     if user:
         query = Recipe.annotate(
@@ -20,6 +19,4 @@ def build_recipe_query(
         )
     else:
         query = Recipe.annotate(likes_count=Count("likes__id"))
-    if filters:
-        query.filter(**filters)
     return query
