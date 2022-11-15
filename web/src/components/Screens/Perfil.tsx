@@ -1,21 +1,28 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import '../../styles/auth.css';
+import * as appService from '../../services/services';
+import catGif from '/catGif.gif'
 
 export const Perfil = () => {
     const [name,setName]  = useState('James');
 
+    useEffect(()=>{
+      getProfileInfo();
+    })
+
     const {
         register,
         handleSubmit,
+        setValue,
         watch,
         formState: { errors,isDirty }
       } = useForm({
         defaultValues: {
           name: 'James',
-          password: 'verySecurePassword',
+          recipesCount: 0,
+          likesGiven: 0,
           userName: 'james',
-          email: 'james@acompany.com',
         }
       });
     
@@ -24,6 +31,29 @@ export const Perfil = () => {
         //console.log(data);
       window.location.href = '/perfil';
     };
+
+    const getProfileInfo = async() => {
+      interface ProfileData{
+        display_name:string,
+        username:string,
+        data:any
+      }
+      await appService.getProfileInfo().then((res:Response) => {
+          let user : ProfileData = res as any;
+          setValue('name',user.display_name);
+          setValue('userName',user.username);
+        })
+      
+      await appService.getProfileRecipes().then((res:Response) => {
+        let user : ProfileData = res as any;
+        setValue('recipesCount',user.data.length);
+      })
+
+      await appService.getProfileLikes().then((res:Response) => {
+        let user : ProfileData = res as any;
+        setValue('likesGiven',user.data.length);
+      })
+    }
 
     return(
       <div className="row d-flex justify-content-center">
@@ -35,28 +65,28 @@ export const Perfil = () => {
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <div style={{marginTop:'20pt'}}>
-              <h3> ¿Deseas cambiar tu nombre? </h3>
-              <input defaultValue="test" {...register("name", { required: true })} autoComplete='off' className="form-control"/>
+              <h3> Tu nombre es: </h3>
+              <input defaultValue="test" {...register("name", { required: true })} autoComplete='off' className="form-control" disabled={true}/>
 
-              <h3> Escoge un nuevo nombre de usuario </h3>
+              <h3> Tu nombre de usuario es: </h3>
               <input defaultValue="test"
                 {...register("userName", { required: true, 
                                           maxLength: {value: 15, 
                                                       message:'Ups!, solo pueden ser maximo 15 caracteres'},
                                           pattern:{value: /^(?=.{1,15}$)(?![_.\s])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.\s])$/,
-                                                  message:'Ups!, solo pueden ser letras y numeros'} })} autoComplete='off' className="form-control"/>
+                                                  message:'Ups!, solo pueden ser letras y numeros'} })} autoComplete='off' className="form-control"
+                                          disabled={true}/>
               {errors.userName && <span role="alert" style={{color:'red'}}>{errors.userName.message}</span>}
 
-              <h3> ¿Nuevo correo? ¡Actualízalo! </h3>
-              <input defaultValue="test" {...register("email", { required: true })} autoComplete='off' className="form-control" type={'email'}/>
+              <h3> Numero de recetas creadas: </h3>
+              <input defaultValue="test" {...register("recipesCount", { required: true })} autoComplete='off' className="form-control" disabled={true}/>
 
-              <h3> Escoge una nueva contraseña </h3>
-              <input {...register("password", { required: true })} autoComplete='off' type={'password'} className="form-control"/>
-
-              <br/>
-              <input className="btn btn-success btn-sm" type="submit" value="Actualizar" disabled={!isDirty}/>
+              <h3> Numero de likes dados: </h3>
+              <input defaultValue="test" {...register("likesGiven", { required: true })} autoComplete='off' className="form-control" disabled={true}/>
             </div>
           </form>
+          <br />
+          <img src={catGif} alt="" width={'140px'} height={'140px'}/>
         </div>
       </div>
   )

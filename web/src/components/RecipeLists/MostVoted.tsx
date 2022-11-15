@@ -3,7 +3,8 @@ import { mostVotedCards } from "../../placeHolders/DashboardCards";
 import { Recipe } from "../../interfaces/Recipe";
 import {RecipePreview} from "../Ui/RecipePreview";
 import Grid from '@mui/material/Unstable_Grid2';
-import Pagination from '@mui/material/Pagination';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
 export const MostVoted= () => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -30,7 +31,8 @@ export const MostVoted= () => {
                 }
             </Grid>
             <div style={{margin:'auto',paddingTop:'15px'}}>
-                <Pagination  color="primary" size="small" />
+            <ArrowCircleLeftIcon fontSize="large" sx={{color: false? '#507DBC': "gray"}}/>
+            <ArrowCircleRightIcon fontSize="large" sx={{color: '#507DBC'}}/>
             </div>
         </>
     )

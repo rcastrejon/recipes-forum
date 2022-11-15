@@ -38,3 +38,9 @@ export const getRecipes = (body:any): Promise<Response> => get(
     `recipes?sorting=${body.sorting}&page=${body.page}&limit=${body.limit}`);
 
 export const getRecipe = (id:Key): Promise<Response> => get(`recipes/${id}`);
+
+export const getProfileInfo = (): Promise<Response> => get(`me/`);
+
+export const getProfileRecipes = (): Promise<Response> => get(`me/recipes`);
+
+export const getProfileLikes = (): Promise<Response> => get(`me/likes`);
