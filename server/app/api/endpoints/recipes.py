@@ -107,7 +107,12 @@ async def get_recipe_thumbnail(
     return Response(
         content=recipe["thumbnail"],
         media_type=recipe["thumbnail_media_type"],
-        headers={"Cache-Control": "public, max-age=31536000, immutable"},
+        headers={
+            "accept-ranges": "bytes",
+            "access-control-allow-origin": "*",
+            "cache-control": "public, max-age=31536000, immutable",
+            "content-disposition": "attachment; filename=thumbnail.jpg",
+        },
     )
 
 
