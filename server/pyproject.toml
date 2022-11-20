@@ -18,6 +18,8 @@ Pillow = "^9.2.0"
 bleach = "^5.0.1"
 pyheif = "^0.7.0"
 bleach-allowlist = "^1.0.3"
+sse-starlette = "^1.1.6"
+fastapi-plugins = "^0.11.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.10.0"
@@ -27,6 +29,7 @@ mypy = "^0.982"
 isort = "^5.10.1"
 types-Markdown = "^3.4.2"
 types-bleach = "^5.0.3"
+types-redis = "^4.3.21"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

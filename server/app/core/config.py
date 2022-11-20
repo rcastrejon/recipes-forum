@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import AnyHttpUrl, BaseSettings, PostgresDsn
+from pydantic import AnyHttpUrl, BaseSettings, PostgresDsn, RedisDsn
 
 
 class Settings(BaseSettings):
@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     API_URL: AnyHttpUrl = "http://localhost:8000"  # type: ignore
 
     DATABASE_URL: PostgresDsn
+    REDIS_URL: RedisDsn = "redis://localhost:6379"  # type: ignore
 
     ACCESS_TOKEN_SECRET: str
     REFRESH_TOKEN_SECRET: str

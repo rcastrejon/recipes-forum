@@ -120,13 +120,16 @@ class Recipe(AbstractBase):
         # the user is authenticated.
         return None
 
+    def viewers(self) -> Optional[int]:
+        return None
+
     def thumbnail_url(self) -> str:
         settings = get_settings()
         return f"{settings.API_URL}/recipes/{self.id}/thumbnail"
 
     class PydanticMeta:
         exclude = ("thumbnail", "thumbnail_media_type", "likes")
-        computed = ("likes_count", "thumbnail_url", "liked")
+        computed = ("likes_count", "thumbnail_url", "liked", "viewers")
 
 
 Tortoise.init_models(["app.models"], "models")
