@@ -5,6 +5,7 @@ from tortoise.contrib.fastapi import register_tortoise
 
 from app.api.router import api_router
 from app.core import get_settings
+from app.redis import config
 
 
 def get_application() -> FastAPI:
@@ -35,7 +36,7 @@ app = get_application()
 
 @app.on_event("startup")
 async def on_startup() -> None:
-    await redis_plugin.init_app(app)
+    await redis_plugin.init_app(app, config=config)
     await redis_plugin.init()
 
 
