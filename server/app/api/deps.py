@@ -126,11 +126,13 @@ async def recipe_viewers_stream(
     key = f"recipe:{recipe_id}"
     pubsub = redis.pubsub()
     try:
-        await redis.incr(key)
-        await pubsub.subscribe(f"__keyspace@0__:{key}")
+        viewers = await redis.incr(key)
+        await redis.publish(key, str(viewers))
+        await pubsub.subscribe(key)
         yield (key, pubsub)
     finally:
-        await pubsub.unsubscribe(f"__keyspace@0__:{key}")
+        await pubsub.unsubscribe(key)
         viewers = await redis.decr(key)
+        await redis.publish(key, str(viewers))
         if viewers < 1:
             await redis.delete(key)
