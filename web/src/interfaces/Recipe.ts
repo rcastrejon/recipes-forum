@@ -14,8 +14,10 @@ export class Recipe{
 
 export interface FetchRecipes{
     data:Recipe[],
-    cursor:{
-        next: number,
-        prev: number
-    }
+    cursor:Cursor
+}
+
+export interface Cursor{
+    next_page: number | null,
+    previous_page: number | null
 }

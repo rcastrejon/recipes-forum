@@ -43,12 +43,13 @@ export const SingleRecipe: React.FC = () => {
 
     return (
         <div className="justify-content-center" style={{maxWidth:700,margin:'auto'}}>
+            {recipe.title.length ==0 && <h1>Loading✨</h1>}
             <h1>{recipe.title}</h1>
             
             <CardMedia
                 component="img"
                 image={recipe.thumbnail_url}
-                alt="sandwich"
+                alt=""
                 sx={{borderRadius:3}}
 
                 className='jrounded mx-auto d-block'
