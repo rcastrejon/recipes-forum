@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react"
-import { mostVotedCards } from "../../placeHolders/DashboardCards";
-import { Recipe } from "../../interfaces/Recipe";
-import {RecipePreview} from "../Ui/RecipePreview";
+import * as appService from '../../services/services';
+import { FetchRecipes, Recipe } from "../../interfaces/Recipe";
 import Grid from '@mui/material/Unstable_Grid2';
+import { RecipePreview } from "../Ui/RecipePreview";
 
 export const Recientes= () => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
 
     useEffect(()=>{
-        fetchMostVoted();
-    })
+        getMostRecentRecipes();
+    },[])
 
-    function fetchMostVoted(){
-        setRecipes(mostVotedCards);
+    const getMostRecentRecipes = async() => {
+        await appService.getRecipes({sorting:'created_at',page:1,limit:20}).then((res:FetchRecipes) => {
+            let response:FetchRecipes = res as any;
+            setRecipes(response.data);
+          })
     }
 
     return(

@@ -9,4 +9,13 @@ export class Recipe{
     likes_count: number = 0;
     thumbnail_url: string = "";
     liked: boolean = false;
+    content_html: string = "";
+}
+
+export interface FetchRecipes{
+    data:Recipe[],
+    cursor:{
+        next: number,
+        prev: number
+    }
 }

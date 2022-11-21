@@ -39,6 +39,7 @@ export const CustomSnackbar: React.FC<Props> = ({inputText}) => {
         onClose={handleClose}
         message={inputText}
         key={vertical + horizontal}
+        onClick={()=>{window.location.href='/login'}}
       />
     </div>
   );

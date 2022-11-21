@@ -13,7 +13,7 @@ export const Favoritos = () => {
     })
 
     function fetchMostVoted(){
-        setRecipes(likedRecipes);
+        //setRecipes(likedRecipes);
     }
 
     return (

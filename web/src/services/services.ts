@@ -1,6 +1,6 @@
 import { Key } from 'react';
-import { get, post, put } from './base-services';
-
+import { Recipe,FetchRecipes } from '../interfaces/Recipe';
+import { deleteMethod, get, post, put } from './base-services';
 
 /**
  * Valida si el token de aplicacion es valido
@@ -34,13 +34,21 @@ export const postRegister = (body:any): Promise<Response> =>{
     return post('register',body);
 }
 
-export const getRecipes = (body:any): Promise<Response> => get(
+export const getRecipes = (body:any): Promise<FetchRecipes> => get(
     `recipes?sorting=${body.sorting}&page=${body.page}&limit=${body.limit}`);
 
-export const getRecipe = (id:Key): Promise<Response> => get(`recipes/${id}`);
+export const getRecipe = (id:string): Promise<Response> => get(`recipes/${id}`);
 
 export const getProfileInfo = (): Promise<Response> => get(`me/`);
 
 export const getProfileRecipes = (): Promise<Response> => get(`me/recipes`);
 
 export const getProfileLikes = (): Promise<Response> => get(`me/likes`);
+
+export const likeRecipe = (id:Key): Promise<Response> => post(`recipes/${id}/likes`,{});
+
+export const unlikeRecipe = (id:Key): Promise<Response> => deleteMethod(`recipes/${id}/likes`,{});
+
+export const getLiveRecipes = (): Promise<Recipe[]> => get(`live`);
+
+export const notifyView = (id:Key): Promise<Response> => get(`recipes/${id}`);

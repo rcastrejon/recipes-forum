@@ -15,7 +15,7 @@ export const MisRecetas = () => {
     })
 
     function fetchMostVoted(){
-        setRecipes(mostVotedCards);
+        //setRecipes(mostVotedCards);
     }
 
     return (

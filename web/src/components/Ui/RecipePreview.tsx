@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as appService from '../../services/services';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -36,11 +37,12 @@ export const RecipePreview: React.FC<RecipeReviewCardProps> = ({recipe}) => {
   const [likes,setLikes] = React.useState(recipe.likes_count);
   const [liked,setLiked] = React.useState(recipe.liked);
 
-    const handleLike = () => { 
-      const addition = liked ? -1 : 1;
-      setLikes(likes + addition);
-      setLiked(!liked);
-    }
+  const handleLike = () => { 
+    const addition = liked ? -1 : 1;
+    setLikes(likes + addition);
+    setLiked(!liked);
+    updateLikes(!liked);
+  }
   
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -67,17 +69,40 @@ export const RecipePreview: React.FC<RecipeReviewCardProps> = ({recipe}) => {
   } 
 
   const downloadImage = () => {
-    saveAs(recipe.thumbnail_url, `${recipe.title}.jpg`) 
+    var a = document.createElement('a');
+    a.href = recipe.thumbnail_url;
+    a.download = recipe.title;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  function renderTitle(){
+    if(recipe.title.length > 32){
+        return recipe.title.substring(0,32) + '...'
+    }
+    if(recipe.title.length < 17){
+      return recipe.title
+    }
+    return recipe.title;
+  }
+
+  const updateLikes = async(isLiked:boolean) => {
+    isLiked ? 
+    await appService.likeRecipe(recipe.id) : 
+    await appService.unlikeRecipe(recipe.id);
   }
 
   return (
-    <Card sx={{ maxWidth: 270 }}>
+    <Card sx={{ maxWidth: 270,minHeight:370,maxHeight:370}}>
+      {/* {renderTitle().length <17 ? <div style={{fontSize:'1.5rem'}}>&nbsp;</div>:''} */}
       <CardHeader
         onClick={()=>{window.location.href='/recipe/'+recipe.id}}
-        title={recipe.title}
-        sx={{cursor:'pointer'}}
-        subheader={'@'+recipe.created_by.username + ' - ' + timeSince(recipe.created_at) + ' días'}
+        title={renderTitle()}
+        sx={{cursor:'pointer',whiteSpace: "break-spaces"}}
+        subheader={(renderTitle().length <17 ? '\n':'')+'@'+recipe.created_by.username + ' - ' + timeSince(recipe.created_at) + ' días'}
       />
+      
       <CardMedia
         component="img"
         height="194"

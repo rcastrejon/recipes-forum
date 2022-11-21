@@ -67,7 +67,7 @@ export const Login = () => {
 
             
             <div style={{paddingTop:'8pt'}}>
-              <a href="/register">Or register</a> 🎉
+              <a href="/register">O regístrate</a> 🎉
             </div>
 
             {loading && <CircularProgress sx={{marginTop:'15px'}} color="secondary"/>}

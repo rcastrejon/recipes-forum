@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { mostVotedCards } from "../../placeHolders/DashboardCards";
-import { Recipe } from "../../interfaces/Recipe";
+import * as appService from '../../services/services';
+import { FetchRecipes, Recipe } from "../../interfaces/Recipe";
 import {RecipePreview} from "../Ui/RecipePreview";
 import Grid from '@mui/material/Unstable_Grid2';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
@@ -10,11 +10,14 @@ export const MostVoted= () => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
 
     useEffect(()=>{
-        fetchMostVoted();
-    })
+        getMostVotedRecipes();
+    },[])
 
-    function fetchMostVoted(){
-        setRecipes(mostVotedCards);
+    const getMostVotedRecipes = async() => {
+        await appService.getRecipes({sorting:'likes_count',page:1,limit:20}).then((res:FetchRecipes) => {
+            let response:FetchRecipes = res as any;
+            setRecipes(response.data);
+          })
     }
 
     return(
