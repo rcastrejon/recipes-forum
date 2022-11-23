@@ -12,6 +12,7 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@hookform/resolvers": "^2.9.10",
+    "@microsoft/fetch-event-source": "^2.0.1",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.11",
     "bootstrap": "^5.2.2",

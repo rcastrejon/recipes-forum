@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { FetchRecipes} from "../../interfaces/Recipe";
 import '../../styles/auth.css';
 import * as appService from '../../services/services';
 import catGif from '/catGif.gif'
@@ -19,10 +20,10 @@ export const Perfil = () => {
         formState: { errors,isDirty }
       } = useForm({
         defaultValues: {
-          name: 'James',
+          name: '',
           recipesCount: 0,
           likesGiven: 0,
-          userName: 'james',
+          userName: '',
         }
       });
     
@@ -49,7 +50,7 @@ export const Perfil = () => {
         setValue('recipesCount',user.data.length);
       })
 
-      await appService.getProfileLikes().then((res:Response) => {
+      await appService.getProfileLikes({page:1,limit:40}).then((res:FetchRecipes) => {
         let user : ProfileData = res as any;
         setValue('likesGiven',user.data.length);
       })
