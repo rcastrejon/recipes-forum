@@ -1,12 +1,14 @@
-import fastapi_plugins
+from typing import AsyncIterator
+
+import redis.asyncio as redis
+from redis.asyncio.client import Redis
 
 from app.core.config import get_settings
 
 
-@fastapi_plugins.registered_configuration
-class AppSettings(fastapi_plugins.RedisSettings):
-    redis_url: str = get_settings().REDIS_URL
-    redis_max_connections: int = 50
-
-
-config = fastapi_plugins.get_config()
+async def get_redis() -> AsyncIterator[Redis]:
+    client: Redis = redis.from_url(get_settings().REDIS_URL)
+    try:
+        yield client
+    finally:
+        await client.connection_pool.disconnect()

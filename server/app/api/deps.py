@@ -1,16 +1,13 @@
-import uuid
 from abc import ABC
-from typing import AsyncIterator, NamedTuple, Optional
+from typing import NamedTuple, Optional
 
 from fastapi import Cookie, Depends, HTTPException, Query, status
 from fastapi.security import OAuth2PasswordBearer
-from fastapi_plugins import depends_redis
 from jose.exceptions import JWTError
-from redis.asyncio.client import PubSub, Redis
 from tortoise.exceptions import DoesNotExist
 
 from app.core import Settings, get_settings
-from app.models import Recipe, User
+from app.models import User
 from app.utils import jwt
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
@@ -112,27 +109,3 @@ class Pagination:
     class CursorPages(NamedTuple):
         previous_page: Optional[int]
         next_page: Optional[int]
-
-
-async def recipe_viewers_stream(
-    recipe_id: uuid.UUID, redis: Redis = Depends(depends_redis)
-) -> AsyncIterator[tuple[str, PubSub]]:
-    if not Recipe.exists(id=recipe_id):
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Recipe not found",
-        )
-
-    key = f"recipe:{recipe_id}"
-    pubsub = redis.pubsub()
-    try:
-        viewers = await redis.incr(key)
-        await redis.publish(key, str(viewers))
-        await pubsub.subscribe(key)
-        yield (key, pubsub)
-    finally:
-        await pubsub.unsubscribe(key)
-        viewers = await redis.decr(key)
-        await redis.publish(key, str(viewers))
-        if viewers < 1:
-            await redis.delete(key)
