@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
-import { mostVotedCards } from "../../placeHolders/DashboardCards";
-import { FetchRecipes,Recipe } from "../../interfaces/Recipe";
+import { Recipe } from "../../interfaces/Recipe";
 import * as appService from '../../services/services';
 import {RecipePreview} from "../Ui/RecipePreview";
 import Grid from '@mui/material/Unstable_Grid2';
