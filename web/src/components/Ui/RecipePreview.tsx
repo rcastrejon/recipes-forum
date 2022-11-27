@@ -37,6 +37,11 @@ export const RecipePreview: React.FC<RecipeReviewCardProps> = ({recipe}) => {
   const [likes,setLikes] = React.useState(recipe.likes_count);
   const [liked,setLiked] = React.useState(recipe.liked);
 
+  React.useEffect(()=>{
+    setLikes(recipe.likes_count);
+    setLiked(recipe.liked);
+  },[]);
+
   const handleLike = () => { 
     const addition = liked ? -1 : 1;
     setLikes(likes + addition);
@@ -95,7 +100,6 @@ export const RecipePreview: React.FC<RecipeReviewCardProps> = ({recipe}) => {
 
   return (
     <Card sx={{ maxWidth: 270,minHeight:370,maxHeight:370}}>
-      {/* {renderTitle().length <17 ? <div style={{fontSize:'1.5rem'}}>&nbsp;</div>:''} */}
       <CardHeader
         onClick={()=>{window.location.href='/recipe/'+recipe.id}}
         title={renderTitle()}

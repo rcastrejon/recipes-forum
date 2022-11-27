@@ -16,7 +16,7 @@ export const Favoritos = () => {
     },[])
 
     const getUserLikes = async() => {
-        await appService.getProfileLikes({page:1,limit:2}).then((res:FetchRecipes) => {
+        await appService.getProfileLikes({page:1,limit:6}).then((res:FetchRecipes) => {
             let response:FetchRecipes = res as any;
             setRecipes(response.data);
             setCursor(response.cursor);
@@ -24,7 +24,7 @@ export const Favoritos = () => {
     }
 
     const changePage = async (pageIncrement:number) => {
-        await appService.getProfileLikes({page:page+pageIncrement,limit:2}).then((res:FetchRecipes) => {
+        await appService.getProfileLikes({page:page+pageIncrement,limit:6}).then((res:FetchRecipes) => {
             let response:FetchRecipes = res as any;
             setRecipes(response.data);
             setCursor(response.cursor);

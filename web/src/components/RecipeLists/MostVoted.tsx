@@ -39,7 +39,7 @@ export const MostVoted= () => {
                     recipes.map(
                         ( _item, _index ) => (
                             <Grid justifySelf={'flex-start'} key={_index}>
-                                <RecipePreview recipe={_item} key={_index}/>
+                                <RecipePreview recipe={_item} key={_index+page}/>
                             </Grid>
                         ) 
                     )
