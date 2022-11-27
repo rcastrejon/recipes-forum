@@ -2,22 +2,32 @@ import { Input } from "@mui/material";
 import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
 import { editRecipe } from "../../placeHolders/DashboardCards";
+import * as appService from '../../services/services';
+import { ConstructRecipe } from "../../SpecialFunctions/BuildRecipe";
 
 //Componente que genera la vista de una receta en particular
 export const EditRecipe: React.FC = () => {
     const { id } = useParams();
     const fileInput = useRef() as React.MutableRefObject<HTMLInputElement>;
     const [fileName, setFileName] = useState("Nada ha sido seleccionado");
+    const [loading, setLoading] = useState(false);
+    const [sendFile,setSendFile] = useState<File>();
     const isRequired = id ? false : true;
+
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+        setValue('imagen',reader.result as string);
+    });
 
     const onFilechange = ( e:React.ChangeEvent<HTMLInputElement> ) => {
         const input = (e.target as HTMLInputElement).files![0];
+        setSendFile(input);
         setFileName( input? input.name : "Nada ha sido seleccionado" );
-        setValue('imagen', input.name);
+        reader.readAsDataURL(input);
     }
     const onBtnClick = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        //e.preventDefault();
         fileInput.current.click();
     }
 
@@ -58,15 +68,25 @@ export const EditRecipe: React.FC = () => {
         }
     }
 
-    const onSubmit = (e:React.FormEvent<HTMLFormElement>,data:any) => {
-        e.preventDefault();
-        window.location.href = '/mis-recetas';
+    const newSubmit = (data:any) => {
+        setLoading(true);
+        postRecipe();
+        const sendButton = document.getElementById('buttonAdd');
+        sendButton?.setAttribute('disabled','true');
     };
 
-    const newSubmit = (data:any) => {
-        console.log(data);
-        window.location.href = '/mis-recetas';
-    };
+    const postRecipe = async() => {
+        const formData = new FormData();
+        formData.append('content_md', ConstructRecipe(getValues()));
+        formData.append('title', getValues('titulo'));
+        const imageBlob = new Blob([sendFile as BlobPart], {type: sendFile?.type});
+        formData.append('thumbnail', imageBlob); 
+        
+        await appService.buildRecipe(formData).then((res:any) => {
+            setLoading(false);
+            window.location.href = '/mis-recetas';
+        });
+    }
 
     return (
         <div style={{maxWidth:700,margin:'auto'}}>
@@ -134,10 +154,13 @@ export const EditRecipe: React.FC = () => {
                 </div>
 
                 <br/>
-
+                {loading && 
+                    <div><CircularProgress size='30px'/></div>
+                }
                 <input id='buttonAdd' type="submit" value="Enviar" disabled={!isDirty} style={{width:'80px'}}/>
+                
+                
                 </div>
-
             </form>
         </div>
     )

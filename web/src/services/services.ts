@@ -1,6 +1,7 @@
 import { Key } from 'react';
 import { Recipe,FetchRecipes } from '../interfaces/Recipe';
-import { deleteMethod, get, post, put } from './base-services';
+import { RenderedRecipe } from '../interfaces/RenderedRecipe';
+import { deleteMethod, get, post, put,patch } from './base-services';
 
 /**
  * Valida si el token de aplicacion es valido
@@ -52,3 +53,15 @@ export const unlikeRecipe = (id:Key): Promise<Response> => deleteMethod(`recipes
 export const getLiveRecipes = (): Promise<Recipe[]> => get(`live`);
 
 export const notifyView = (id:Key): Promise<Response> => get(`recipes/${id}`);
+
+
+export const buildRecipe = async(recipe:any):Promise<Response> => {
+    return await fetch('https://recipes-forum-api.onrender.com/recipes',{
+        method:'POST',
+        headers:{
+            "Authorization": 'Bearer ' + localStorage.getItem("security-token") || "",
+            "Access-Control-Allow-Origin": "https://recipes-forum-api.onrender.com/"
+        },
+        body: recipe
+    });
+}

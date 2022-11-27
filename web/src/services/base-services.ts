@@ -14,7 +14,6 @@ const request = (method: string, options: RequestInit): Promise<any> => {
 
     return fetch(apiUrl.concat(method), options)
         .catch((resp) => {
-            //window.location.href = '/login';
             throw new Error(resp);
         })
         .then(async (resp) => {

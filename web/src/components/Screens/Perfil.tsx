@@ -45,7 +45,7 @@ export const Perfil = () => {
           setValue('userName',user.username);
         })
       
-      await appService.getProfileRecipes().then((res:Response) => {
+      await appService.getProfileRecipes({}).then((res:FetchRecipes) => {
         let user : ProfileData = res as any;
         setValue('recipesCount',user.data.length);
       })
