@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { editRecipe } from "../../placeHolders/DashboardCards";
 import * as appService from '../../services/services';
 import { ConstructRecipe } from "../../SpecialFunctions/BuildRecipe";
+import { getCosto, getIngredientes, getPasos, getTiempo } from "../../SpecialFunctions/SeparateRecipe";
 
 //Componente que genera la vista de una receta en particular
 export const EditRecipe: React.FC = () => {
@@ -33,11 +34,7 @@ export const EditRecipe: React.FC = () => {
 
     useEffect(() => {
         if(id){
-            setValue('titulo', editRecipe.titulo, {shouldDirty: false});
-            setValue('tiempo', editRecipe.tiempo);
-            setValue('costo', editRecipe.costo);
-            setValue('ingredientes', editRecipe.ingredientes);
-            setValue('pasos', editRecipe.pasos);
+            getRecipeContent(id);
         }
     }, []);
 
@@ -70,7 +67,7 @@ export const EditRecipe: React.FC = () => {
 
     const newSubmit = (data:any) => {
         setLoading(true);
-        postRecipe();
+        id ? editRecipe(): postRecipe();
         const sendButton = document.getElementById('buttonAdd');
         sendButton?.setAttribute('disabled','true');
     };
@@ -82,10 +79,30 @@ export const EditRecipe: React.FC = () => {
         const imageBlob = new Blob([sendFile as BlobPart], {type: sendFile?.type});
         formData.append('thumbnail', imageBlob); 
         
-        await appService.buildRecipe(formData).then((res:any) => {
+        await appService.publishRecipe(formData).then((res:any) => {
             setLoading(false);
             window.location.href = '/mis-recetas';
         });
+    }
+
+    const editRecipe = async() => {
+        const updatedRecipe = {content_md: ConstructRecipe(getValues()), title: getValues('titulo')};
+        await appService.editRecipe(updatedRecipe,id!).then((res:any) => {
+            setLoading(false);
+            window.location.href = '/mis-recetas';
+        });
+    }
+
+    const getRecipeContent = async(data:string) => {
+        await appService.getRecipe(data).then((res:any) => {
+            setValue('titulo', res.title, {shouldDirty: false});
+            setValue('tiempo', getTiempo(res.content_md));
+            setValue('costo', getCosto(res.content_md));
+            setValue('ingredientes', getIngredientes(res.content_md));
+            setValue('pasos', getPasos(res.content_md));
+          }
+        ).catch((err:any) => {
+        })
     }
 
     return (
@@ -138,7 +155,7 @@ export const EditRecipe: React.FC = () => {
                 <textarea {...register("pasos", { required: true })} 
                 autoComplete='off' className="form-control textArea" rows={15}/>
 
-                
+                {!id &&<>
                 <h3> Imagen* </h3>
                 <div className="d-flex justify-content-center">
                     <input type="file" data-buttontext="hello" accept="image/*" 
@@ -148,10 +165,11 @@ export const EditRecipe: React.FC = () => {
                     ref={fileInput}
                     />
                     <button className='form-control' 
-                    {...register("imagen", { required: true })} 
+                    {...register("imagen", { required: !id })} 
                     onClick={(e)=>onBtnClick(e)} style={{width:'170px'}}>Sube una imagen</button>
                     <label className="labelForFile">{fileName}</label>
                 </div>
+                </>}
 
                 <br/>
                 {loading && 

@@ -10,6 +10,7 @@ export class Recipe{
     thumbnail_url: string = "";
     liked: boolean = false;
     content_html: string = "";
+    viewers: number = 0;
 }
 
 export interface FetchRecipes{

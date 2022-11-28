@@ -46,7 +46,7 @@ export const MisRecetas = () => {
                 {
                     recipes.map(
                         ( _item, _index ) => (
-                            <Grid justifySelf={'flex-start'} key={_index}>
+                            <Grid justifySelf={'flex-start'} key={_index+page}>
                                 <MyRecipe recipe={_item} />
                             </Grid>
                         ) 

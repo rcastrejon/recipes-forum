@@ -6,6 +6,7 @@ import { Recipe } from '../../interfaces/Recipe';
 import { CardMedia, IconButton } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import React, { useEffect, useState } from 'react';
+import * as appService from '../../services/services';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -29,6 +30,7 @@ export const MyRecipe: React.FC<Props> = ({recipe}) => {
         const addition = liked ? -1 : 1;
         setLikes(likes + addition);
         setLiked(!liked);
+        updateLikes(!liked);
     }
 
     function renderTitle(){
@@ -37,6 +39,12 @@ export const MyRecipe: React.FC<Props> = ({recipe}) => {
         }
         return recipe.title;
     }
+
+    const updateLikes = async(isLiked:boolean) => {
+        isLiked ? 
+        await appService.likeRecipe(recipe.id) : 
+        await appService.unlikeRecipe(recipe.id);
+      }
 
     return (
         <Grid container spacing={2}>
@@ -68,10 +76,10 @@ export const MyRecipe: React.FC<Props> = ({recipe}) => {
                         
                         {/* <IconButton className='buttonIcon'>
                             <span className='numbersInMyRecipe align-text-bottom'>
-                                {recipe.likes_count}
+                                {recipe.viewers??0}
                             </span>
                             <VisibilityIcon sx={{color: '#E83151'}}/>
-                        </IconButton> */}
+                        </IconButton>  */}
                     </div>
                     
                     <CardMedia

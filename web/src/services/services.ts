@@ -54,8 +54,7 @@ export const getLiveRecipes = (): Promise<Recipe[]> => get(`live`);
 
 export const notifyView = (id:Key): Promise<Response> => get(`recipes/${id}`);
 
-
-export const buildRecipe = async(recipe:any):Promise<Response> => {
+export const publishRecipe = async(recipe:any):Promise<Response> => {
     return await fetch('https://recipes-forum-api.onrender.com/recipes',{
         method:'POST',
         headers:{
@@ -65,3 +64,5 @@ export const buildRecipe = async(recipe:any):Promise<Response> => {
         body: recipe
     });
 }
+
+export const editRecipe = async(recipe:any,id:Key):Promise<Response> => patch(`recipes/${id}`,recipe);
