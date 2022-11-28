@@ -58,10 +58,13 @@ async def create_recipe(
 @router.get("", response_model=p.RecipePage)
 async def list_recipes(
     sorting: schemas.RecipeSorting = "created_at",
+    search: Optional[str] = None,
     pagination: Pagination = Depends(),
     user: Optional[User] = Depends(get_user_optional),
 ) -> Any:
     query = extras.build_recipe_query(user)
+    if search:
+        query = query.filter(title__search=search)
     if sorting == "created_at":
         query = query.order_by("-created_at")
     else:
