@@ -24,6 +24,7 @@ function BuildUnorderedList(list:string):string{
     let listArray = list.split(/,| \r\n|\n|\r /);
 
     listArray.forEach(element => {
+        element = element.replaceAll('*','');
         if(element != '')
             listString += `* ${element}\n`;
     });
