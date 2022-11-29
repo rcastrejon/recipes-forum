@@ -43,6 +43,7 @@ class User(AbstractBase, TimestampMixin):
     username = fields.CharField(max_length=15, unique=True)
     display_name: Optional[str] = fields.CharField(max_length=50, null=True)
     password_hash = fields.CharField(max_length=60)
+    recipe_count = fields.IntField(default=0)
 
     @classmethod
     def ctor(
