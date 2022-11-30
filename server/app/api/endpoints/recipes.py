@@ -64,7 +64,7 @@ async def list_recipes(
 ) -> Any:
     query = extras.build_recipe_query(user)
     if search:
-        query = query.filter(title__search=search)
+        query = query.filter(title__icontains=search)
     if sorting == "created_at":
         query = query.order_by("-created_at")
     else:

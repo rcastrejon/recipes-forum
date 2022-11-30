@@ -22,7 +22,7 @@ def get_application() -> FastAPI:
         app,
         db_url=settings.DATABASE_URL,
         modules={"models": ["app.models"]},
-        generate_schemas=True,
+        generate_schemas=False,
     )
 
     app.include_router(api_router)
