@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = ["Rodrigo Castrejon <47370853+rcastrejon@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.85.1"
+uvicorn = {extras = ["standard"], version = "^0.18.3"}
+python-dotenv = "^0.21.0"
+tortoise-orm = {extras = ["asyncmy"], version = "^0.19.2"}
+python-multipart = "^0.0.5"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+Markdown = "^3.4.1"
+Pillow = "^9.2.0"
+bleach = "^5.0.1"
+pyheif = "^0.7.0"
+bleach-allowlist = "^1.0.3"
+sse-starlette = "^1.1.6"
+redis = "^4.3.5"
+
+[tool.poetry.dev-dependencies]
+black = "^22.10.0"
+autoflake = "^1.7.6"
+flake8 = "^5.0.4"
+mypy = "^0.982"
+isort = "^5.10.1"
+types-Markdown = "^3.4.2"
+types-bleach = "^5.0.3"
+types-redis = "^4.3.21"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
