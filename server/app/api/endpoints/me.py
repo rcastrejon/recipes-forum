@@ -6,7 +6,7 @@ from tortoise.expressions import RawSQL
 from tortoise.functions import Count
 
 import app.schemas.pagination as p
-import app.schemas.user as m
+import app.schemas.user as schemas
 import app.utils.orm_extras as extras
 from app.api.deps import Pagination, get_current_user
 from app.models import Like, Recipe, RecipeList_Pydantic, User
@@ -14,14 +14,14 @@ from app.models import Like, Recipe, RecipeList_Pydantic, User
 router = APIRouter()
 
 
-@router.get("", response_model=m.User)
+@router.get("", response_model=schemas.User)
 async def get_logged_user(user: User = Depends(get_current_user)) -> Any:
     conn = connections.get("default")
     res = await conn.execute_query_dict(
         f"SELECT * FROM `get_users` WHERE id='{user.id}'"
     )
     result_dict = res[0]
-    return m.User(**result_dict)
+    return schemas.User(**result_dict)
 
 
 @router.get("/recipes", response_model=p.RecipePage)

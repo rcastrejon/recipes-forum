@@ -8,4 +8,11 @@ class User(BaseModel):
     likes_count: int
 
     class Config:
-        orm_mode = True
+        schema_extra = {
+            "example": {
+                "username": "john_doe",
+                "display_name": "John Doe",
+                "recipe_count": "1",
+                "likes_count": "1",
+            }
+        }

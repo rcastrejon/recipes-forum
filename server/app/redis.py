@@ -3,7 +3,7 @@ from typing import AsyncIterator
 import redis.asyncio as redis
 from redis.asyncio.client import Redis
 
-from app.core.config import get_settings
+from app.core import get_settings
 
 
 async def get_redis() -> AsyncIterator[Redis]:
