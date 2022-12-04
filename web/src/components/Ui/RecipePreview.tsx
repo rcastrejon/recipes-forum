@@ -124,7 +124,7 @@ export const RecipePreview: React.FC<RecipeReviewCardProps> = ({recipe}) => {
         </IconButton>
         
         <IconButton onClick={downloadImage}>
-          <DownloadIcon/>
+          <DownloadIcon className='DownloadButton'/>
         </IconButton>
 
         <ExpandMore

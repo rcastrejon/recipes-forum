@@ -75,8 +75,8 @@ export const SingleRecipe: React.FC = () => {
             />
 
             <div className="d-flex justify-content-between p-3 text-black" style={{gap:'.7vw'}}>
-                <div className="align-bottom" style={{padding:0,paddingTop:'10px'}}>@{recipe.created_by.display_name}</div>
-                <span className="align-bottom" style={{padding:0,paddingTop:'10px'}}>{counter} 👀</span>
+                <div className="align-bottom metadata" style={{padding:0,paddingTop:'10px'}}>@{recipe.created_by.display_name}</div>
+                <span className="align-bottom metadata" style={{padding:0,paddingTop:'10px'}}>{counter} 👀</span>
                 <IconButton onClick={handleLike}>
                     <span style={{fontSize:'15px',marginTop:'5px',marginRight:'3px'}} className='align-text-bottom'>
                         {likes}

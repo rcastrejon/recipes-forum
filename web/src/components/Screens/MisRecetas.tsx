@@ -54,7 +54,7 @@ export const MisRecetas = () => {
                     )
                 }
             </Grid>
-            <div style={{margin:'auto',paddingTop:'20px'}}>
+            <div style={{margin:'auto',paddingTop:'20px'}} className='cursor'>
                 <span onClick={()=>cursor.previous_page !=null && changePage(-1)}>
                     <ArrowCircleLeftIcon fontSize="large" sx={{color: cursor.previous_page !=null ? '#507DBC': "gray",cursor:'pointer'}}/>
                 </span>

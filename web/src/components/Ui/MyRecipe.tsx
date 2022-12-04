@@ -48,7 +48,7 @@ export const MyRecipe: React.FC<Props> = ({recipe}) => {
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={6} >
             <ThemeProvider theme={lightTheme}>
                 <Box
                 sx={{
@@ -88,7 +88,7 @@ export const MyRecipe: React.FC<Props> = ({recipe}) => {
                         image={recipe.thumbnail_url}
                         alt="dish"
                         sx={{borderRadius:3}}
-                        className='p-2 align-middle'
+                        className='p-2 align-middle ImageToPrint'
                         onClick={()=>{window.location.href='/recipe/'+recipe.id}}
                     />
                     

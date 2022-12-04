@@ -76,7 +76,7 @@ export const Navbar = () => {
         <UserContext.Consumer>
             {
                 dataUser => (
-                    <div className="d-flex justify-content-between mw-100" style={{boxShadow:'0 2px 4px 0 rgba(0,0,0,.2)',padding:'5pt'}}>
+                    <div className="d-flex justify-content-between mw-100" style={{boxShadow:'0 2px 4px 0 rgba(0,0,0,.2)',padding:'5pt'}} id='NavBarContainer'>
                         <div>
                             <Link to="/" className="logo flex items-center" style={{padding:0,marginRight:'5pt'}}>
                                 <svg width="38pt" height="49pt" viewBox="0 0 90 117" fill="none" xmlns="http://www.w3.org/2000/svg">

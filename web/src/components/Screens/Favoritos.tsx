@@ -46,7 +46,7 @@ export const Favoritos = () => {
                     )
                 }
             </Grid>
-            <div style={{margin:'auto',paddingTop:'15px',marginTop:'5pt'}}>
+            <div style={{margin:'auto',paddingTop:'15px',marginTop:'5pt'}} className='cursor'>
                 <span onClick={()=>cursor.previous_page !=null && changePage(-1)}>
                     <ArrowCircleLeftIcon fontSize="large" sx={{color: cursor.previous_page !=null ? '#507DBC': "gray"}}/>
                 </span>
