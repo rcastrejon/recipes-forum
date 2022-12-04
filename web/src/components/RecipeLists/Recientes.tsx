@@ -5,6 +5,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { RecipePreview } from "../Ui/RecipePreview";
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import { SearchBar } from "../Ui/SearchBar";
 
 export const Recientes= () => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -19,11 +20,12 @@ export const Recientes= () => {
         await appService.getRecipes({sorting:'created_at',page:1,limit:8}).then((res:FetchRecipes) => {
             let response:FetchRecipes = res as any;
             setRecipes(response.data);
+            setCursor(response.cursor);
           })
     }
 
     const changePage = async (pageIncrement:number) => {
-        await appService.getRecipes({sorting:'likes_count',page:page+pageIncrement,limit:8}).then((res:FetchRecipes) => {
+        await appService.getRecipes({sorting:'created_at',page:page+pageIncrement,limit:8}).then((res:FetchRecipes) => {
             let response:FetchRecipes = res as any;
             setRecipes(response.data);
             setCursor(response.cursor);
@@ -33,6 +35,7 @@ export const Recientes= () => {
 
     return(
         <>
+            <SearchBar undoAction={getMostRecentRecipes} sorting='created_at' setRecipes={setRecipes} setCursor={setCursor}/>
             <Grid container rowSpacing={4} columnSpacing={{ xs: 3, sm: 3, md: 3 }} alignItems='start' justifyContent="center" >
                 {
                     recipes.map(
@@ -44,13 +47,15 @@ export const Recientes= () => {
                     )
                 }
             </Grid>
-            <div style={{margin:'auto',paddingTop:'15px'}}>
-                <span onClick={()=>cursor.previous_page !=null && changePage(-1)}>
-                    <ArrowCircleLeftIcon fontSize="large" sx={{color: cursor.previous_page !=null ? '#507DBC': "gray"}}/>
-                </span>
-                <span onClick={()=>cursor.next_page !=null && changePage(1)}>
-                    <ArrowCircleRightIcon fontSize="large" sx={{color: cursor.next_page !=null ? '#507DBC': "gray"}}/>
-                </span>
+            <div className="container">
+                <div style={{margin:'auto',paddingTop:'15px'}} >
+                    <span onClick={()=>cursor.previous_page !=null && changePage(-1)}>
+                        <ArrowCircleLeftIcon fontSize="large" sx={{color: cursor.previous_page !=null ? '#507DBC': "gray",cursor:'pointer'}}/>
+                    </span>
+                    <span onClick={()=>cursor.next_page !=null && changePage(1)}>
+                        <ArrowCircleRightIcon fontSize="large" sx={{color: cursor.next_page !=null ? '#507DBC': "gray",cursor:'pointer'}}/>
+                    </span>
+                </div>
             </div>
         </>
     )

@@ -5,6 +5,7 @@ import {RecipePreview} from "../Ui/RecipePreview";
 import Grid from '@mui/material/Unstable_Grid2';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import { SearchBar } from "../Ui/SearchBar";
 
 export const MostVoted= () => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -34,6 +35,7 @@ export const MostVoted= () => {
 
     return(
         <>
+            <SearchBar undoAction={getMostVotedRecipes} sorting='likes_count' setRecipes={setRecipes} setCursor={setCursor}/>
             <Grid container rowSpacing={4} columnSpacing={{ xs: 3, sm: 3, md: 3 }} alignItems='start' justifyContent="center" >
                 {
                     recipes.map(
@@ -45,13 +47,15 @@ export const MostVoted= () => {
                     )
                 }
             </Grid>
-            <div style={{margin:'auto',paddingTop:'15px'}}>
-                <span onClick={()=>cursor.previous_page !=null && changePage(-1)}>
-                    <ArrowCircleLeftIcon fontSize="large" sx={{color: cursor.previous_page !=null ? '#507DBC': "gray"}}/>
-                </span>
-                <span onClick={()=>cursor.next_page !=null && changePage(1)}>
-                    <ArrowCircleRightIcon fontSize="large" sx={{color: cursor.next_page !=null ? '#507DBC': "gray"}}/>
-                </span>
+            <div className="container">
+                <div style={{margin:'auto',paddingTop:'15px'}} >
+                    <span onClick={()=>cursor.previous_page !=null && changePage(-1)}>
+                        <ArrowCircleLeftIcon fontSize="large" sx={{color: cursor.previous_page !=null ? '#507DBC': "gray",cursor:'pointer'}}/>
+                    </span>
+                    <span onClick={()=>cursor.next_page !=null && changePage(1)}>
+                        <ArrowCircleRightIcon fontSize="large" sx={{color: cursor.next_page !=null ? '#507DBC': "gray",cursor:'pointer'}}/>
+                    </span>
+                </div>
             </div>
         </>
     )

@@ -23,6 +23,7 @@ export const MisRecetas = () => {
         await appService.getProfileRecipes({page:1,limit:4}).then((res:FetchRecipes) => {
             let response:Recipe[] = res.data as any;
             setRecipes(response);
+            setCursor(res.cursor);
         })
     }
 
@@ -55,10 +56,10 @@ export const MisRecetas = () => {
             </Grid>
             <div style={{margin:'auto',paddingTop:'20px'}}>
                 <span onClick={()=>cursor.previous_page !=null && changePage(-1)}>
-                    <ArrowCircleLeftIcon fontSize="large" sx={{color: cursor.previous_page !=null ? '#507DBC': "gray"}}/>
+                    <ArrowCircleLeftIcon fontSize="large" sx={{color: cursor.previous_page !=null ? '#507DBC': "gray",cursor:'pointer'}}/>
                 </span>
                 <span onClick={()=>cursor.next_page !=null && changePage(1)}>
-                    <ArrowCircleRightIcon fontSize="large" sx={{color: cursor.next_page !=null ? '#507DBC': "gray"}}/>
+                    <ArrowCircleRightIcon fontSize="large" sx={{color: cursor.next_page !=null ? '#507DBC': "gray",cursor:'pointer'}}/>
                 </span>
             </div>
         </>

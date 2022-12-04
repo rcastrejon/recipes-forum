@@ -38,11 +38,14 @@ export const postRegister = (body:any): Promise<Response> =>{
 export const getRecipes = (body:any): Promise<FetchRecipes> => get(
     `recipes?sorting=${body.sorting}&page=${body.page}&limit=${body.limit}`);
 
+export const searchRecipes = (body:any): Promise<FetchRecipes> => get(
+    `recipes?sorting=${body.sorting}&search=${body.name}&page=${body.page}&limit=${body.limit}`);
+
 export const getRecipe = (id:string): Promise<Response> => get(`recipes/${id}`);
 
 export const getProfileInfo = (): Promise<Response> => get(`me/`);
 
-export const getProfileRecipes = (body:any): Promise<FetchRecipes> => get(`me/recipes`,body);
+export const getProfileRecipes = (body:any): Promise<FetchRecipes> => get(`me/recipes?page=${body.page}&limit=${body.limit}`);
 
 export const getProfileLikes = (body:any): Promise<FetchRecipes> => get(`me/likes?page=${body.page}&limit=${body.limit}`);
 
