@@ -77,7 +77,7 @@ export const Register = () => {
 
                   
                   <div style={{paddingTop:'8pt'}}>
-                  <a href="/login">Or sign in</a> ❤️
+                  <a href="/login">O ingresa</a> ❤️
                   </div>
               </div>
               

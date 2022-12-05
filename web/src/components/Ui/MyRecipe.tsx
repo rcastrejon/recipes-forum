@@ -7,7 +7,13 @@ import { CardMedia, IconButton } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import React, { useEffect, useState } from 'react';
 import * as appService from '../../services/services';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -25,6 +31,7 @@ interface Props {
 export const MyRecipe: React.FC<Props> = ({recipe}) => {
     const [likes,setLikes] = useState(recipe.likes_count);
     const [liked,setLiked] = useState(recipe.liked);
+    const [openConfirmation, setOpen] = React.useState(false);
 
     const handleLike = () => { 
         const addition = liked ? -1 : 1;
@@ -33,9 +40,15 @@ export const MyRecipe: React.FC<Props> = ({recipe}) => {
         updateLikes(!liked);
     }
 
+    const deleteRecipe = async() => {
+        await appService.deleteRecipe(recipe.id);
+        setOpen(false);
+        window.location.reload();
+    }
+
     function renderTitle(){
-        if(recipe.title.length > 22){
-            return recipe.title.substring(0,22) + '...'
+        if(recipe.title.length > 12){
+            return recipe.title.substring(0,12) + '...'
         }
         return recipe.title;
     }
@@ -44,7 +57,7 @@ export const MyRecipe: React.FC<Props> = ({recipe}) => {
         isLiked ? 
         await appService.likeRecipe(recipe.id) : 
         await appService.unlikeRecipe(recipe.id);
-      }
+    }
 
     return (
         <Grid container spacing={2}>
@@ -73,13 +86,10 @@ export const MyRecipe: React.FC<Props> = ({recipe}) => {
                             </span>
                             <ThumbUpIcon sx={{color: liked ? '#387780':'gray'}}/>
                         </IconButton>
-                        
-                        {/* <IconButton className='buttonIcon'>
-                            <span className='numbersInMyRecipe align-text-bottom'>
-                                {recipe.viewers??0}
-                            </span>
-                            <VisibilityIcon sx={{color: '#E83151'}}/>
-                        </IconButton>  */}
+
+                        <IconButton sx={{marginTop:'5pt'}} onClick={()=>{setOpen(true)}} className='buttonIcon'>
+                            <DeleteIcon sx={{color:'red'}}/>
+                        </IconButton>
                     </div>
                     
                     <CardMedia
@@ -97,6 +107,24 @@ export const MyRecipe: React.FC<Props> = ({recipe}) => {
                 </Box>
             </ThemeProvider>
             </Grid>
+
+            <Dialog
+                open={openConfirmation}
+                keepMounted
+                onClose={()=>setOpen(false)}
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle>{"¡Cuidado!"}</DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                    ¿Seguro que deseas eliminar esta receta?
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={()=>setOpen(false)}>Cancelar</Button>
+                <Button onClick={deleteRecipe}>Aceptar</Button>
+                </DialogActions>
+            </Dialog>
         </Grid>
     );
 }
