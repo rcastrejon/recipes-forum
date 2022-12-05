@@ -9,4 +9,16 @@ export class Recipe{
     likes_count: number = 0;
     thumbnail_url: string = "";
     liked: boolean = false;
+    content_html: string = "";
+    viewers: number = 0;
+}
+
+export interface FetchRecipes{
+    data:Recipe[],
+    cursor:Cursor
+}
+
+export interface Cursor{
+    next_page: number | null,
+    previous_page: number | null
 }

@@ -1,12 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import '../../styles/auth.css';
+import * as appService from '../../services/services';
+import CircularProgress from '@mui/material/CircularProgress';
+import Cookies from 'universal-cookie';
 
 export const Login = () => {
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const cookies = new Cookies();
+    return () => {
+      cookies.remove('isRegisterSuccessful');
+    }
+  }, []);
+
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors }
   } = useForm({
     defaultValues: {
@@ -15,9 +26,21 @@ export const Login = () => {
     }
   });
 
+  const loginValidation = async(data:any) => {
+    const credentials = {username: data.name,password: data.password};
+    setLoading(true);
+    await appService.postLogin(credentials).then((res:any) => {
+        localStorage.setItem('security-token',res.access_token);
+        window.location.href='/';
+        setLoading(false);
+      }
+    ).catch((err:any) => {
+      setLoading(false);
+    })
+  }
   
   const onSubmit = (data:any) => {
-    window.location.href = '/dashboard';
+    loginValidation(data);
   };
   
 
@@ -44,8 +67,10 @@ export const Login = () => {
 
             
             <div style={{paddingTop:'8pt'}}>
-              <a href="/register">Or register</a> 🎉
+              <a href="/register">O regístrate</a> 🎉
             </div>
+
+            {loading && <CircularProgress sx={{marginTop:'15px'}} color="secondary"/>}
           </div>
           
         </form>

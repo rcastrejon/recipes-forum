@@ -38,3 +38,18 @@
 .read-the-docs {
   color: #888;
 }
+
+@media print{
+  #SearchBarContainer,#NavBarContainer{
+    display: none !important;
+  }
+
+  .container,.metadata,.myButtonContainer,
+  .cursor,.DownloadButton{
+    display: none !important;
+  }
+
+  .ImageToPrint{
+    max-width: 140px;
+  }
+}
