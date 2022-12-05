@@ -43,7 +43,7 @@ export const searchRecipes = (body:any): Promise<FetchRecipes> => get(
 
 export const getRecipe = (id:string): Promise<Response> => get(`recipes/${id}`);
 
-export const getProfileInfo = (): Promise<Response> => get(`me/`);
+export const getProfileInfo = (): Promise<Response> => get(`me`);
 
 export const getProfileRecipes = (body:any): Promise<FetchRecipes> => get(`me/recipes?page=${body.page}&limit=${body.limit}`);
 
