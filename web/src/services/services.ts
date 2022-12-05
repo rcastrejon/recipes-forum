@@ -15,7 +15,7 @@ export const postLogin = (body: any): Promise<Response> => {
     query.append('username',body.username);
     query.append('password',body.password);
     
-    return fetch('https://recipes-forum-api.onrender.com/login',{
+    return fetch('https://recipes-forum-production.up.railway.app/login',{
         body:query,
         method:'POST'
     }).then(
@@ -43,7 +43,7 @@ export const searchRecipes = (body:any): Promise<FetchRecipes> => get(
 
 export const getRecipe = (id:string): Promise<Response> => get(`recipes/${id}`);
 
-export const getProfileInfo = (): Promise<Response> => get(`me/`);
+export const getProfileInfo = (): Promise<Response> => get(`me`);
 
 export const getProfileRecipes = (body:any): Promise<FetchRecipes> => get(`me/recipes?page=${body.page}&limit=${body.limit}`);
 
@@ -58,11 +58,11 @@ export const getLiveRecipes = (): Promise<Recipe[]> => get(`live`);
 export const notifyView = (id:Key): Promise<Response> => get(`recipes/${id}`);
 
 export const publishRecipe = async(recipe:any):Promise<Response> => {
-    return await fetch('https://recipes-forum-api.onrender.com/recipes',{
+    return await fetch('https://recipes-forum-production.up.railway.app/recipes',{
         method:'POST',
         headers:{
             "Authorization": 'Bearer ' + localStorage.getItem("security-token") || "",
-            "Access-Control-Allow-Origin": "https://recipes-forum-api.onrender.com/"
+            "Access-Control-Allow-Origin": "https://recipes-forum-production.up.railway.app/"
         },
         body: recipe
     });

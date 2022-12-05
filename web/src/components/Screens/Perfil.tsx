@@ -37,23 +37,16 @@ export const Perfil = () => {
       interface ProfileData{
         display_name:string,
         username:string,
-        data:any
+        recipe_count: number,
+        likes_count: number,
       }
       await appService.getProfileInfo().then((res:Response) => {
           let user : ProfileData = res as any;
           setValue('name',user.display_name);
           setValue('userName',user.username);
+          setValue('recipesCount',user.recipe_count);
+          setValue('likesGiven',user.likes_count);
         })
-      
-      await appService.getProfileRecipes({page:1,limit:40}).then((res:FetchRecipes) => {
-        let user : ProfileData = res as any;
-        setValue('recipesCount',user.data.length);
-      })
-
-      await appService.getProfileLikes({page:1,limit:40}).then((res:FetchRecipes) => {
-        let user : ProfileData = res as any;
-        setValue('likesGiven',user.data.length);
-      })
     }
 
     return(
@@ -74,7 +67,7 @@ export const Perfil = () => {
                 {...register("userName", { required: true, 
                                           maxLength: {value: 15, 
                                                       message:'Ups!, solo pueden ser maximo 15 caracteres'},
-                                          pattern:{value: /^(?=.{1,15}$)(?![_.\s])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.\s])$/,
+                                          pattern:{value: /^[a-zA-Z0-9]+$/,
                                                   message:'Ups!, solo pueden ser letras y numeros'} })} autoComplete='off' className="form-control"
                                           disabled={true}/>
               {errors.userName && <span role="alert" style={{color:'red'}}>{errors.userName.message}</span>}

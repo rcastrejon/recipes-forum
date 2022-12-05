@@ -31,23 +31,6 @@ export const SingleRecipe: React.FC = () => {
         })
     }
 
-    const notify = async(id:string) => {
-      await fetchEventSource(`https://recipes-forum-api.onrender.com/live/${id}`, {
-          onmessage(event) {
-            if(event.event=='update'){
-              setCounter(event.data);
-            }
-          },
-          onclose() {
-          },
-          onerror(err) {
-            console.log('check with server');
-            
-            throw err;
-          },
-        });
-    }
-
     const updateLikes = async(isLiked:boolean) => {
         isLiked ? 
         await appService.likeRecipe(recipe.id) : 
@@ -57,7 +40,28 @@ export const SingleRecipe: React.FC = () => {
     useEffect(() => {
         const id = window.location.href.split('/')[4];
         getRecipeContent(id);        
+        const controller = new AbortController();
+        const notify = async(id:string) => {
+          await fetchEventSource(`https://recipes-forum-production.up.railway.app/live/${id}`, {
+              signal: controller.signal,
+              onmessage(event) {
+                if(event.event=='update'){
+                  setCounter(event.data);
+                }
+              },
+              onclose() {
+              },
+              onerror(err) {
+                console.log('check with server');
+                
+                throw err;
+              },
+            });
+        }
         notify(id);
+        return () => {
+          controller.abort();
+        }
     }, [])
 
     return (
