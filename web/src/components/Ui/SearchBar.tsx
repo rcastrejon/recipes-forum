@@ -52,7 +52,7 @@ export const SearchBar: React.FC<Props> = (props) => {
   };
   
   return (
-    <div style={{margin:'auto',padding:'auto',width:'100%'}} id='SearchBarContainer'>
+    <div style={{margin:'auto',padding:'auto',width:'100%',marginBottom:'15pt'}} id='SearchBarContainer'>
       <form onSubmit={handleSubmit(onSubmit)}>
         <OutlinedInput {...register("search", { required: true })} size='small' style={{width:'145px'}} placeholder="Buscar receta" autoComplete='off'/>
         <span style={{marginLeft:'5pt'}}>
