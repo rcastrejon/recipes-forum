@@ -62,7 +62,7 @@ export const Register = () => {
                     {...register("username", { required: true, 
                                               maxLength: {value: 15, 
                                                           message:'Ups!, solo pueden ser maximo 15 caracteres'},
-                                              pattern:{value: /^(?=.{1,15}$)(?![_.\s])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.\s])$/,
+                                              pattern:{value: /^[a-zA-Z0-9]+$/,
                                                       message:'Ups!, solo pueden ser letras y numeros'} })} autoComplete='off' className="form-control"/>
                   {errors.username && <span role="alert" style={{color:'red'}}>{errors.username.message}</span>}
 
