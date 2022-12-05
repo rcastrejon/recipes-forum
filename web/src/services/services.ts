@@ -69,3 +69,5 @@ export const publishRecipe = async(recipe:any):Promise<Response> => {
 }
 
 export const editRecipe = async(recipe:any,id:Key):Promise<Response> => patch(`recipes/${id}`,recipe);
+
+export const deleteRecipe = (id:Key): Promise<Response> => deleteMethod(`recipes/${id}`,{})
