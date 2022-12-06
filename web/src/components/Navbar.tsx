@@ -54,7 +54,7 @@ export const Navbar = () => {
           </List>
           <Divider />
             <List>
-                {['Log out'].map((text, index) => (
+                {['Cerrar sesión'].map((text, index) => (
                 <div className='drawerLinks' key={index}>
                     <ListItem key={text} disablePadding onClick={()=>{
                         localStorage.setItem('security-token','');
