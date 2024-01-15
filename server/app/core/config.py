@@ -1,13 +1,13 @@
 from functools import lru_cache
 
-from pydantic import AnyHttpUrl, BaseSettings, RedisDsn
+from pydantic import AnyHttpUrl, BaseSettings, RedisDsn, PostgresDsn
 
 
 class Settings(BaseSettings):
     APPLICATION_NAME: str = "FastAPI"
     API_URL: AnyHttpUrl = "http://localhost:8000"  # type: ignore
 
-    DATABASE_URL: str
+    DATABASE_URL: PostgresDsn
     REDIS_URL: RedisDsn = "redis://localhost:6379"  # type: ignore
 
     ACCESS_TOKEN_SECRET: str

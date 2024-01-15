@@ -1,7 +1,7 @@
 from io import BytesIO
 from typing import BinaryIO, NamedTuple
 
-import pyheif
+# import pyheif
 from PIL import Image, ImageEnhance, ImageFilter
 
 
@@ -19,15 +19,16 @@ def create_thumbnail(input_image: BinaryIO, media_type: str) -> bytes:
     :raises PIL.UnidentifiedImageError: If the input image is not a valid image.
     """
     if "heic" in media_type or "heif" in media_type:
-        heif_file = pyheif.read_heif(input_image)
-        img = Image.frombytes(
-            heif_file.mode,
-            heif_file.size,
-            heif_file.data,
-            "raw",
-            heif_file.mode,
-            heif_file.stride,
-        )
+        # heif_file = pyheif.read_heif(input_image)
+        # img = Image.frombytes(
+        #     heif_file.mode,
+        #     heif_file.size,
+        #     heif_file.data,
+        #     "raw",
+        #     heif_file.mode,
+        #     heif_file.stride,
+        # )
+        raise NotImplementedError
     else:
         img = Image.open(input_image)
     width, height = img.size
