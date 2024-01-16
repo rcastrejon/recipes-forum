@@ -42,7 +42,7 @@ export const SingleRecipe: React.FC = () => {
         getRecipeContent(id);        
         const controller = new AbortController();
         const notify = async(id:string) => {
-          await fetchEventSource(`https://recipes-forum-production.up.railway.app/live/${id}`, {
+          await fetchEventSource(`https://recetario-foraneo.onrender.com/live/${id}`, {
               signal: controller.signal,
               onmessage(event) {
                 if(event.event=='update'){

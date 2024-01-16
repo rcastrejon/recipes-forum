@@ -15,7 +15,7 @@ export const postLogin = (body: any): Promise<Response> => {
     query.append('username',body.username);
     query.append('password',body.password);
     
-    return fetch('https://recipes-forum-production.up.railway.app/login',{
+    return fetch('https://recetario-foraneo.onrender.com/login',{
         body:query,
         method:'POST'
     }).then(
@@ -58,11 +58,11 @@ export const getLiveRecipes = (): Promise<Recipe[]> => get(`live`);
 export const notifyView = (id:Key): Promise<Response> => get(`recipes/${id}`);
 
 export const publishRecipe = async(recipe:any):Promise<Response> => {
-    return await fetch('https://recipes-forum-production.up.railway.app/recipes',{
+    return await fetch('https://recetario-foraneo.onrender.com/recipes',{
         method:'POST',
         headers:{
             "Authorization": 'Bearer ' + localStorage.getItem("security-token") || "",
-            "Access-Control-Allow-Origin": "https://recipes-forum-production.up.railway.app/"
+            "Access-Control-Allow-Origin": "https://recetario-foraneo.onrender.com/"
         },
         body: recipe
     });
