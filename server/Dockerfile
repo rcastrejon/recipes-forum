@@ -14,15 +14,15 @@ WORKDIR /usr/app
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive \
     apt-get install --no-install-recommends --assume-yes \
-    build-essential gcc git automake make pkg-config x265 libde265-dev libjpeg-dev libtool curl
+    build-essential git curl
 
-RUN git clone https://github.com/strukturag/libheif.git libheif \
-    && cd libheif \
-    && ./autogen.sh \
-    && ./configure \
-    && make -j4 \
-    && make install \
-    && ldconfig
+# RUN git clone https://github.com/strukturag/libheif.git libheif \
+#     && cd libheif \
+#     && ./autogen.sh \
+#     && ./configure \
+#     && make -j4 \
+#     && make install \
+#     && ldconfig
 
 RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry python3 -
 ENV PATH /opt/poetry/venv/bin/:$PATH

@@ -9,7 +9,7 @@ const request = (method: string, options: RequestInit): Promise<any> => {
     options.headers = Object.assign({}, {
         "Content-Type": "application/json",
         "Authorization": 'Bearer ' + localStorage.getItem("security-token") || "",
-        "Access-Control-Allow-Origin": "https://recipes-forum-production.up.railway.app/"
+        "Access-Control-Allow-Origin": "https://recetario-foraneo.onrender.com/"
     }, options.headers);
 
     return fetch(apiUrl.concat(method), options)

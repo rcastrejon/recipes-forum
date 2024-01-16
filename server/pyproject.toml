@@ -9,14 +9,13 @@ python = "^3.9"
 fastapi = "^0.85.1"
 uvicorn = {extras = ["standard"], version = "^0.18.3"}
 python-dotenv = "^0.21.0"
-tortoise-orm = {extras = ["asyncmy"], version = "^0.19.2"}
+tortoise-orm = {extras = ["asyncpg"], version = "^0.19.2"}
 python-multipart = "^0.0.5"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 Markdown = "^3.4.1"
 Pillow = "^9.2.0"
 bleach = "^5.0.1"
-pyheif = "^0.7.0"
 bleach-allowlist = "^1.0.3"
 sse-starlette = "^1.1.6"
 redis = "^4.3.5"
