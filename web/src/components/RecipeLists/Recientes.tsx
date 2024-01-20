@@ -38,7 +38,7 @@ export const Recientes= () => {
             <SearchBar undoAction={getMostRecentRecipes} sorting='created_at' setRecipes={setRecipes} setCursor={setCursor}/>
             <Grid container rowSpacing={4} columnSpacing={{ xs: 3, sm: 3, md: 3 }} alignItems='start' justifyContent="center" >
                 {
-                    recipes.map(
+                    recipes?.map(
                         ( _item, _index ) => (
                             <Grid justifySelf={'flex-start'} key={_index}>
                                 <RecipePreview recipe={_item } key={_index+page}/>
